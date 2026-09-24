@@ -59,6 +59,8 @@ a{color:var(--accent)}
 .pill.fail{background:var(--fail);color:var(--fail-ink)}
 .pill.warn{background:var(--warn);color:var(--warn-ink)}
 .take{color:var(--ink-2)}
+.optrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+.optrow .seg button{font-size:12px;padding:4px 10px}
 .score{display:inline-block;min-width:3.2em}
 .pill.mk{padding:2px 8px;font-size:11px;font-weight:600;white-space:nowrap}
 
@@ -107,6 +109,7 @@ ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;max-wid
 
   <section class="block">
     <div><h2>Side by side</h2><p class="muted small">Separation scores how different each color looks from the one next to it. Higher is better, and each palette is judged on its closest pair. <b>Color-blind</b> simulates red-green color blindness: 8 or more passes, 6–8 is borderline. <b>Typical vision</b>: 15 or more passes. The contrast columns count how many of the first 8 colors are hard to see (below 3:1) on each background. Sorted from best to worst for color-blind readers.</p></div>
+    <div class="optrow"><span class="ctl-label">Spectrum option</span><span class="seg" id="tableOptSeg" role="group" aria-label="Spectrum palette option in the table"></span></div>
     <div class="tablewrap cvd-target"><table>
       <thead><tr><th>Palette</th><th>First 8</th><th>Color-blind separation</th><th>Typical-vision separation</th><th>Below 3:1 on white</th><th>Below 3:1 on dark</th><th>Too light/dark or greyish</th></tr></thead>
       <tbody id="compare"></tbody>
@@ -173,20 +176,39 @@ function scores(s){return [
   pill(s.normal>=15,false,`Typical ΔE ${s.normal}`),
   pill(s.lowL===0,s.lowL<=2,s.lowL?`${s.lowL} below 3:1 on white`:"All ≥ 3:1 on white"),
   pill(s.lowD===0,s.lowD<=2,s.lowD?`${s.lowD} below 3:1 on dark`:"All ≥ 3:1 on dark")].join("")}
+const OPTS=[
+ {k:"teal",label:"Flora + orange + teal + magenta",c:["#406cc4","#01a2a3","#b15204","#a47ebf","#a08d0e","#698cd3","#7f7004","#c66c99"],
+  s:{cvd:15.7,normal:17.6,lowL:0,lowD:0,band:0},t:"No red or green. Blue, teal and orange lead, and those first three also work for scatter plots. Passes every check on both backgrounds with one set of hex values."},
+ {k:"BM",label:"Flora + orange + magenta",c:["#406cc4","#a08d0e","#a47ebf","#b15204","#c66c99","#7f7004","#698cd3","#ca7541"],
+  s:{cvd:15.6,normal:16.7,lowL:0,lowD:0,band:0},t:"The palette chosen for Spectrum. No red or green, and five different hues lead. Passes every check on both backgrounds with one set of hex values."},
+ {k:"B",label:"Flora + orange",c:["#406cc4","#a08d0e","#8d59b1","#ca7541","#698cd3","#7f7004","#a47ebf","#b15204"],
+  s:{cvd:20.8,normal:21.7,lowL:0,lowD:0,band:0},t:"The most separated palette tested: every neighbouring pair is well apart. After slot 4 each hue repeats one step off. Passes every check on both backgrounds."},
+ {k:"C",label:"Flora + magenta + orange",c:["#406cc4","#b1427e","#a08d0e","#a47ebf","#ca7541","#698cd3","#b15204","#8d59b1"],
+  s:{cvd:11.7,normal:17.6,lowL:0,lowD:0,band:0},t:"No olive yellow, so nothing reads green. The lowest separation of the four options, but still well above target, and its first three colors work for scatter plots."}];
+let optKey="BM",cvdMode="none";
+const OURS=P.find(p=>p.ours);
+function applyOpt(){const o=OPTS.find(x=>x.k===optKey);Object.assign(OURS,{c:o.c,s:o.s,t:o.t,opt:o.label})}
+function render(){applyOpt();
 document.getElementById("gallery").innerHTML=P.map(p=>`<article class="card${p.ours?" ours":""}">
   <div class="cardhead"><h3>${esc(p.n)}</h3><span class="small muted">${esc(p.who)}</span></div>
+  ${p.ours?`<div class="optrow"><span class="ctl-label">Option</span><span class="seg" id="oursSeg" role="group" aria-label="Spectrum palette option">${OPTS.map(o=>`<button type="button" data-v="${o.k}" aria-pressed="${o.k===optKey}">${esc(o.label)}</button>`).join("")}</span></div>`:""}
   <div class="strip cvd-target">${p.c.map((h,i)=>`<div class="${i>=8?"unscored":""}" style="background:${h}" title="${i+1} · ${h}"><span>${i+1}</span></div>`).join("")}</div>
   <div class="hexes">${p.c.join("  ")}</div>
   <div class="mini cvd-target">${mini(p.c)}</div>
   <div class="scores">${scores(p.s)}</div>
   <p class="take small">${esc(p.t)}</p></article>`).join("");
 document.getElementById("compare").innerHTML=P.slice().sort((a,b)=>b.s.cvd-a.s.cvd).map(p=>`<tr>
-  <td>${p.ours?"<b>":""}${esc(p.n)}${p.ours?"</b>":""}</td>
+  <td>${p.ours?"<b>":""}${esc(p.n)}${p.ours?"</b><br><span class=\"small muted\">"+esc(p.opt)+"</span>":""}</td>
   <td><span class="dots">${p.c.slice(0,8).map(h=>`<i style="background:${h}"></i>`).join("")}</span></td>
   <td class="num">${mark(p.s.cvd,8,6)}</td><td class="num">${mark(p.s.normal,15)}</td><td class="num">${p.s.lowL}</td><td class="num">${p.s.lowD}</td><td class="num">${p.s.band}</td></tr>`).join("");
+document.getElementById("tableOptSeg").innerHTML=OPTS.map(o=>`<button type="button" data-v="${o.k}" aria-pressed="${o.k===optKey}">${esc(o.label)}</button>`).join("");
+document.querySelectorAll(".cvd-target").forEach(n=>n.style.filter=cvdMode==="none"?"":`url(#${cvdMode})`);
+}
+render();
+for(const [host,segId] of [["gallery","oursSeg"],["tableOptSeg","tableOptSeg"]])document.getElementById(host).addEventListener("click",e=>{const b=e.target.closest(`#${segId} button`);if(!b)return;optKey=b.dataset.v;render();document.querySelector(`#${segId} [aria-pressed="true"]`).focus()});
 function seg(id,fn){const g=document.getElementById(id);g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));fn(b.dataset.v)})}
 seg("themeSeg",v=>{if(v==="system")document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",v)});
-seg("cvdSeg",v=>document.querySelectorAll(".cvd-target").forEach(n=>n.style.filter=v==="none"?"":`url(#${v})`));
+seg("cvdSeg",v=>{cvdMode=v;document.querySelectorAll(".cvd-target").forEach(n=>n.style.filter=v==="none"?"":`url(#${v})`)});
 })();
 </script>
 </body>
