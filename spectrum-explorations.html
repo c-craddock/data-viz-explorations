@@ -145,27 +145,10 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
     <div class="strip cvd-target">
       <span class="small muted">All step 700</span>
       <div class="row"><div style="background:#c63f46"></div><div style="background:#7f7004"></div><div style="background:#4b7d04"></div><div style="background:#406cc4"></div><div style="background:#8d59b1"></div></div>
-      <span class="small muted">Core palette (mixed steps)</span>
+      <span class="small muted">Mixed steps</span>
       <div class="row"><div style="background:#406cc4"></div><div style="background:#a47ebf"></div><div style="background:#7f7004"></div><div style="background:#d46f74"></div><div style="background:#4b7d04"></div></div>
     </div>
     <p class="small muted">There's also a lightness gap between 700 (OKLCH L≈0.55) and 800 (L≈0.38). Nothing in 800–1200 is usable as a series color on light or dark surfaces, so chart colors live in 500–700.</p>
-  </section>
-
-  <!-- CORE -->
-  <section class="block" id="core">
-    <div class="head">
-      <span class="eyebrow">Categorical · Option A</span>
-      <h2>Core: five hues, system steps only</h2>
-      <p class="muted">Every hex is an existing token. Use it when you have five or fewer series and want zero new colors. The same hexes work in light and dark.</p>
-    </div>
-    <div class="swatches cvd-target" id="coreSw"></div>
-    <div class="stats"><span class="pill">Worst adjacent CVD ΔE 9.0 (target ≥ 8)</span><span class="pill">Normal-vision ΔE 15.3 (floor 15)</span><span class="pill">All ≥ 3:1 on white and on grey/1000</span><span class="pill neutral">Scatter/maps: blue/700 · purple/600 · yellow/600</span></div>
-    <div class="chart cvd-target">
-      <div class="charthead"><h3 id="coreTitle"></h3><span class="seg" id="coreType" role="group" aria-label="Chart type"></span></div>
-      <div class="legend" id="coreLegend"></div>
-      <div id="coreChart"></div>
-      <span class="sample" id="coreNote"></span>
-    </div>
   </section>
 
   <!-- SPECTRUM -->
@@ -219,7 +202,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
       <thead><tr><th>Role</th><th>Token</th><th>Hex</th><th>On white</th><th>On grey/1000</th><th>Example</th></tr></thead>
       <tbody id="statusRows"></tbody>
     </table></div>
-    <p class="small muted">None of the new Spectrum options use red or green, so a series can never be mistaken for a status. (In the current Spectrum, critical red/700 is also slot 8, and green/700 is slot 6.)</p>
+    <p class="small muted">None of these palette options use red or green, so a series can never be mistaken for a critical or success status. Warning (yellow) and serious (orange) share hue families with some series, so the icon and label carry the meaning.</p>
   </section>
 
   <!-- RULES -->
@@ -256,25 +239,25 @@ const C_={b6:{n:"Blue",t:"blue/600",h:"#698cd3"},b7:{n:"Blue",t:"blue/700",h:"#4
  m7:{n:"Magenta",t:"magenta/700",h:"#b1427e",nw:1},m6:{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1}};
 const VARIANTS={
  BM:{label:"Flora + orange + magenta",title:"Flora + orange + magenta: Flora + orange, with magenta",
-   desc:"Flora + orange's hues with magenta/600 in place of the second purple. Five different hues lead, so the first five series are all clearly distinct. Separation drops from Flora + orange's 20.8 to 15.6, still about double the target and on par with the original Spectrum. This is now the Spectrum palette on the main page.",
+   desc:"Flora + orange's hues with magenta/600 in place of the second purple. Five different hues lead, so the first five series are all clearly distinct. Separation drops from Flora + orange's 20.8 to 15.6, still about double the target. This is now the Spectrum palette on the main page.",
    pal:["b6","y6","p6","o7","m6","y7","b7","o6"],trio:["b7","o7","m6"],
    stats:[["Worst neighbouring color-blind ΔE 15.6 (target ≥ 8)",1],["Typical-vision ΔE 16.7 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: blue/700 · orange/700 · magenta/600 (ΔE 10.2)",0]]},
  B:{label:"Flora + orange",title:"Flora + orange: Flora plus the orange ramp",
-   desc:"Adds the orange ramp, a warm hue between red and yellow that isn't either. It's the strongest palette tested: every neighbouring pair is further apart than in the original Spectrum. The first four slots are four different hues, then each repeats one step off. Uses yellow/700 (olive) in slot 6.",
+   desc:"Adds the orange ramp, a warm hue between red and yellow that isn't either. It's the strongest palette tested: every neighbouring pair is further apart than in any other option here. The first four slots are four different hues, then each repeats one step off. Uses yellow/700 (olive) in slot 6.",
    pal:["b6","y6","p7","o6","b7","y7","p6","o7"],trio:["b7","o6","p6"],
    stats:[["Worst neighbouring color-blind ΔE 20.8 (target ≥ 8)",1],["Typical-vision ΔE 21.7 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: blue/700 · orange/600 · purple/600",0]]},
  C:{label:"Flora + magenta + orange",title:"Flora + magenta + orange: no olive",
    desc:"Drops yellow/700 so nothing reads green, and adds magenta/700, a raspberry pink. Five different hues lead, and its first three work for scatter plots as is. Separation is lower than Flora + orange's, but still well above target.",
    pal:["b6","m7","y6","p6","o6","b7","o7","p7"],trio:["b6","m7","y6"],
    stats:[["Worst neighbouring color-blind ΔE 13.0 (target ≥ 8)",1],["Typical-vision ΔE 17.6 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 13.0) for scatter/maps",1]]},
- cur:{label:"Flora + orange + teal + magenta",title:"Flora + orange + teal + magenta: the original Spectrum",
-   desc:"The original Spectrum palette, before it was replaced by Flora + orange + magenta. It includes green/700 (slot 6) and red/700 (slot 8), which read as good/bad and match the status colors.",
+ cur:{label:"Flora + orange + teal + magenta",title:"Flora + orange + teal + magenta: green and red swapped for Flora blue and yellow",
+   desc:"Blue, teal, orange, yellow, magenta and purple, with green/700 and red/700 swapped for Flora's yellow/600 and blue/600. The order was rebuilt so every neighbouring pair still passes. Color-blind separation is 15.7, and the first three colors work for scatter plots as they are.",
    pal:null,trio:null,
-   stats:[["Worst neighbouring color-blind ΔE 15.7 (target ≥ 8)",1],["Typical-vision ΔE 19.1 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 16.2) for scatter/maps",1]]}};
+   stats:[["Worst neighbouring color-blind ΔE 15.7 (target ≥ 8)",1],["Typical-vision ΔE 17.6 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 16.2) for scatter/maps",1]]}};
 const CURRENT=[
- {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Orange",t:"orange/700",h:"#b15204",nw:1},{n:"Teal",t:"teal/600",h:"#01a2a3",nw:1},
- {n:"Yellow",t:"yellow/700",h:"#7f7004"},{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1},{n:"Green",t:"green/700",h:"#4b7d04"},
- {n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Red",t:"red/700",h:"#c63f46"}];
+ {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Teal",t:"teal/600",h:"#01a2a3",nw:1},{n:"Orange",t:"orange/700",h:"#b15204",nw:1},
+ {n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Yellow",t:"yellow/600",h:"#a08d0e"},{n:"Blue",t:"blue/600",h:"#698cd3"},
+ {n:"Yellow",t:"yellow/700",h:"#7f7004"},{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1}];
 VARIANTS.cur.pal=CURRENT;VARIANTS.cur.trio=CURRENT.slice(0,3);
 for(const k of ["BM","B","C"]){VARIANTS[k].pal=VARIANTS[k].pal.map(x=>C_[x]);VARIANTS[k].trio=VARIANTS[k].trio.map(x=>C_[x])}
 let SPEC=VARIANTS.BM.pal;
@@ -445,7 +428,6 @@ function status(){
 function tokens(){
   const L=[];L.push(":root {","  /* Chart surfaces */","  --dataviz-surface: #ffffff;           /* dark: #202121 grey/1000 */","  --dataviz-grid: #eae9e8;              /* grey/200 · dark: #2f3130 grey/900 */","  --dataviz-baseline: #dcdcda;          /* grey/300 · dark: #404241 grey/800 */","  --dataviz-label: #8b8e89;             /* grey/600 */","  --dataviz-other: #8b8e89;             /* grey/600 */","");
   L.push(`  /* Categorical · Spectrum ${VARIANTS[curVar].label} — same in light and dark */`);SPEC.forEach((c,i)=>L.push(`  --dataviz-cat-${i+1}: ${c.h};`.padEnd(38)+`/* ${c.t} */`));
-  L.push("","  /* Categorical · Core (system-only, 5) */");CORE.forEach((c,i)=>L.push(`  --dataviz-core-${i+1}: ${c.h};`.padEnd(38)+`/* ${c.t} */`));
   L.push("","  /* Sequential · blue (light) */");[100,200,300,400,500,700,800,900,1000].forEach((st,i)=>L.push(`  --dataviz-seq-${i+1}: ${BLUE[st]};`.padEnd(38)+`/* blue/${st} */`));
   L.push("","  /* Diverging · orange ↔ grey ↔ blue (light) */");DIV_L.forEach((c,i)=>L.push(`  --dataviz-div-${i-4<0?"n"+(4-i):i===4?"mid":"p"+(i-4)}: ${c};`));
   L.push("","  /* Status (fixed) */");STATUS.forEach(s=>L.push(`  --dataviz-status-${s.r.toLowerCase()}: ${s.h};`.padEnd(38)+`/* ${s.t} */`));
@@ -467,7 +449,7 @@ seg("themeSeg",v=>{if(v==="system")document.documentElement.removeAttribute("dat
 seg("cvdSeg",v=>document.querySelectorAll(".cvd-target").forEach(n=>n.style.filter=v==="none"?"":`url(#${v})`));
 matchMedia("(prefers-color-scheme: dark)").addEventListener("change",themed);
 new MutationObserver(themed).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
-const widths={};const redraw={coreChart:()=>catChart("core"),specChart:()=>catChart("spec"),heat:()=>heat(),divChart:()=>div()};
+const widths={};const redraw={specChart:()=>catChart("spec"),heat:()=>heat(),divChart:()=>div()};
 if(window.ResizeObserver){const ro=new ResizeObserver(es=>es.forEach(e=>{const id=e.target.id,w=Math.round(e.contentRect.width);if(widths[id]!==undefined&&widths[id]!==w){widths[id]=w;hideTip();redraw[id]()}else widths[id]=w}));Object.keys(redraw).forEach(id=>ro.observe($(id)))}
 let last=null;function themed(){const d=isDark();if(d===last)return;last=d;heat();div()}
 
@@ -481,7 +463,7 @@ function setVariant(k){curVar=k;const V=VARIANTS[k];SPEC=V.pal;
   hideTip();catChart("spec");tokens();}
 $("varSeg").innerHTML=["cur","BM","B","C"].map(k=>[k,VARIANTS[k]]).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="false">${v.label}</button>`).join("");
 $("varSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setVariant(b.dataset.v)});
-swatches($("coreSw"),CORE);initChart("core");initChart("spec");setVariant("BM");status();themed();
+initChart("spec");setVariant("BM");status();themed();
 })();
 </script>
 </body>
