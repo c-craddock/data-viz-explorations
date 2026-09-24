@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BI Tool Palette Gallery</title>
+<style>
+:root{
+  --page:#f7f7f7; --surface:#ffffff; --ink:#2f3130; --ink-2:#646864; --ink-3:#8b8e89;
+  --line:#eae9e8; --ring:rgba(47,49,48,.10); --accent:#406cc4;
+  --pass:#eff9e6; --pass-ink:#2f4913; --fail:#fbf3f3; --fail-ink:#792428; --warn:#faf6da; --warn-ink:#4c4207;
+  --font:"SF Pro Text","SF Pro",-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --page:#19191a; --surface:#202121; --ink:#f7f7f7; --ink-2:#b7b7b3; --ink-3:#8b8e89;
+    --line:#2f3130; --ring:rgba(247,247,247,.10); --accent:#7f9bd3;
+    --pass:#25390f; --pass-ink:#c6e8a1; --fail:#3f1315; --fail-ink:#f3d7d9; --warn:#3b3405; --warn-ink:#f6eba6;}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --page:#19191a; --surface:#202121; --ink:#f7f7f7; --ink-2:#b7b7b3; --ink-3:#8b8e89;
+  --line:#2f3130; --ring:rgba(247,247,247,.10); --accent:#7f9bd3;
+  --pass:#25390f; --pass-ink:#c6e8a1; --fail:#3f1315; --fail-ink:#f3d7d9; --warn:#3b3405; --warn-ink:#f6eba6;}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/20px var(--font);letter-spacing:-.15px;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header.top{padding-block:40px 8px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;line-height:16px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+h1{font-size:32px;line-height:38px;font-weight:600;letter-spacing:-.6px;margin:0;text-wrap:balance}
+h2{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.4px;margin:0;text-wrap:balance}
+h3{font-size:16px;line-height:22px;font-weight:600;margin:0}
+p{margin:0;max-width:72ch}
+.lede{font-size:16px;line-height:24px;color:var(--ink-2)}
+.muted{color:var(--ink-2)} .small{font-size:12px;line-height:16px}
+a{color:var(--accent)}
+
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--page);padding-block:10px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{font:inherit;font-size:13px;border:0;background:transparent;color:var(--ink-2);padding:5px 12px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{font-size:12px;color:var(--ink-2);margin-right:6px}
+
+.gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,500px),1fr));gap:20px}
+.card{background:var(--surface);border-radius:24px;padding:24px;display:flex;flex-direction:column;gap:14px;box-shadow:0 0 0 1px var(--ring)}
+.card.ours{box-shadow:0 0 0 2px var(--accent)}
+@media (max-width:600px){.card{padding:18px 16px;border-radius:16px}}
+.cardhead{display:flex;flex-direction:column;gap:2px}
+.strip{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.strip div{height:36px;border-radius:6px;position:relative}
+.strip div.unscored{height:24px;align-self:end;opacity:.9}
+.strip span{position:absolute;top:4px;left:5px;font-size:10px;font-weight:600;color:#fff;mix-blend-mode:normal}
+.hexes{font-size:11px;line-height:15px;color:var(--ink-3);font-variant-numeric:tabular-nums;word-break:break-all}
+.mini svg{width:100%;height:auto;display:block}
+.scores{display:flex;flex-wrap:wrap;gap:6px}
+.pill{font-size:12px;line-height:16px;padding:4px 10px;border-radius:999px;font-variant-numeric:tabular-nums}
+.pill.pass{background:var(--pass);color:var(--pass-ink)}
+.pill.fail{background:var(--fail);color:var(--fail-ink)}
+.pill.warn{background:var(--warn);color:var(--warn-ink)}
+.take{color:var(--ink-2)}
+
+section.block{background:var(--surface);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:16px;box-shadow:0 0 0 1px var(--ring)}
+@media (max-width:600px){section.block{padding:20px 16px;border-radius:16px}}
+.tablewrap{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13px;min-width:640px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-weight:600;font-size:12px;color:var(--ink-2)}
+td.num{font-variant-numeric:tabular-nums}
+td .dots{display:inline-flex;gap:2px;vertical-align:middle}
+td .dots i{width:10px;height:10px;border-radius:2px;display:inline-block}
+ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;max-width:80ch}
+.cvd-target{transition:filter .2s}
+@media (prefers-reduced-motion:reduce){.cvd-target{transition:none}}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="deutan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/></filter>
+    <filter id="protan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/></filter>
+    <filter id="tritan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/></filter>
+    <filter id="gray"><feColorMatrix type="saturate" values="0"/></filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <a class="small" href="index.html">← Our chart palettes</a>
+    <span class="eyebrow">Data viz · Color guidelines · Reference</span>
+    <h1>How popular analytics tools color their charts</h1>
+    <p class="lede">The default categorical palettes of seven widely used BI and charting tools, scored with the same checks as our own palettes. Use it to see what each one gets right, and where it breaks down for color-blind readers or on light and dark backgrounds.</p>
+    <p class="small muted">Scoring uses each palette's first 8 colors (the full palette is shown), neighbouring pairs, and the same backgrounds as ours: white and grey/1000 <code>#202121</code>. These are our criteria, not the tools' own: several ship separate dark-mode palettes, and Grafana is designed dark-first.</p>
+  </header>
+
+  <div class="controls" role="group" aria-label="Preview options">
+    <div><span class="ctl-label">Theme</span><span class="seg" id="themeSeg">
+      <button type="button" data-v="system" aria-pressed="true">System</button><button type="button" data-v="light" aria-pressed="false">Light</button><button type="button" data-v="dark" aria-pressed="false">Dark</button></span></div>
+    <div><span class="ctl-label">Simulate vision</span><span class="seg" id="cvdSeg">
+      <button type="button" data-v="none" aria-pressed="true">Typical</button><button type="button" data-v="deutan" aria-pressed="false">Deuteranopia</button><button type="button" data-v="protan" aria-pressed="false">Protanopia</button><button type="button" data-v="tritan" aria-pressed="false">Tritanopia</button><button type="button" data-v="gray" aria-pressed="false">Grayscale</button></span></div>
+  </div>
+
+  <div class="gallery" id="gallery"></div>
+
+  <section class="block">
+    <div><h2>Side by side</h2><p class="muted small">Sorted by worst color-blind separation between neighbouring colors. Target ≥ 8 for color-blind readers and ≥ 15 for typical vision (OKLab ΔE×100). Contrast counts how many of the first 8 colors fall below 3:1 on each background.</p></div>
+    <div class="tablewrap cvd-target"><table>
+      <thead><tr><th>Palette</th><th>First 8</th><th>Color-blind ΔE</th><th>Typical ΔE</th><th>Below 3:1 on white</th><th>Below 3:1 on dark</th><th>Too light/dark or greyish</th></tr></thead>
+      <tbody id="compare"></tbody>
+    </table></div>
+  </section>
+
+  <section class="block">
+    <h2>What to take from them</h2>
+    <ul>
+      <li><b>Order does as much work as the colors.</b> D3 Category10 and Grafana each put two colors next to each other that look almost the same to red-green color-blind readers (orange/green, purple/violet). The colors are fine; their order is the problem.</li>
+      <li><b>Soft palettes pay for it in contrast.</b> Tableau 10 and Metabase feel calm and "designed", but 4 and 7 of their first 8 colors sit below 3:1 on white. They depend on labels or tooltips to be readable.</li>
+      <li><b>Nobody gets light and dark from one set of hex values</b> except Spectrum. IBM Carbon passes every contrast check on white and fails 5 of 8 on dark, which is why Carbon ships a separate dark palette. Power BI goes the other way.</li>
+      <li><b>Don't put grey in the series order.</b> Superset's slot 5 is <code>#666666</code>, which reads as "Other" or "disabled" and collides with its red for color-blind readers. We keep grey for "Other" only.</li>
+      <li><b>Leading with blue is the norm.</b> Four of the seven open with blue and a fifth with cyan. Spectrum does too, which keeps our charts familiar.</li>
+    </ul>
+  </section>
+
+  <section class="block">
+    <h2>Sources</h2>
+    <ul class="small">
+      <li>Power BI: <a href="https://learn.microsoft.com/en-us/power-bi/create-reports/report-themes-create-custom">Create custom report themes (Microsoft Learn)</a>, default theme <code>dataColors</code>.</li>
+      <li>Grafana: <a href="https://github.com/grafana/grafana/blob/main/packages/grafana-ui/src/utils/colors.ts">grafana-ui/src/utils/colors.ts</a>, classic palette.</li>
+      <li>Metabase: <a href="https://github.com/metabase/metabase/blob/master/frontend/src/metabase/ui/colors/constants/accent-colors.ts">accent-colors.ts</a>, <code>DEFAULT_ACCENT_COLORS</code>.</li>
+      <li>Apache Superset: <a href="https://github.com/apache/superset/blob/master/superset-frontend/packages/superset-ui-core/src/color/colorSchemes/categorical/superset.ts">categorical/superset.ts</a>, "Superset Colors" (full-color half).</li>
+      <li>Tableau 10 and D3 Category10: <a href="https://github.com/d3/d3-scale-chromatic">d3-scale-chromatic</a>, <code>schemeTableau10</code> and <code>schemeCategory10</code>.</li>
+      <li>IBM Carbon: <a href="https://carbondesignsystem.com/data-visualization/color-palettes/">Carbon data visualization color palettes</a>, categorical (light theme).</li>
+      <li>Not included: Looker and Looker Studio. Their documentation doesn't publish default hex values, so they couldn't be verified.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function(){
+const P=[
+ {n:"Tableau 10",who:"Tableau (default since v10) · D3 and Observable Plot default",c:["#4e79a7","#f28e2b","#e15759","#76b7b2","#59a14f","#edc948","#b07aa1","#ff9da7","#9c755f","#bab0ac"],
+  s:{cvd:11.9,normal:14,lowL:4,lowD:0,band:5},t:"Muted and harmonious, and the most-copied palette in the field. Teal and green (slots 4 and 5) are hard to tell apart even with typical vision, and half the colors are too pale for white."},
+ {n:"Tableau Classic / D3 Category10",who:"Older Tableau · D3 · Matplotlib (tab10)",c:["#1f77b4","#ff7f0e","#2ca02c","#d62728","#9467bd","#8c564b","#e377c2","#7f7f7f","#bcbd22","#17becf"],
+  s:{cvd:0.7,normal:17.1,lowL:2,lowD:1,band:2},t:"Bright and familiar, but orange and green, neighbours in slots 2 and 3, become one color for red-green color-blind readers. The textbook failure case."},
+ {n:"Power BI",who:"Microsoft Power BI default theme",c:["#118DFF","#12239E","#E66C37","#6B007B","#E044A7","#744EC2","#D9B300","#D64550","#197278","#1AAB40"],
+  s:{cvd:8.7,normal:20.6,lowL:1,lowD:3,band:3},t:"Strong, saturated, and good contrast on white. The navy, plum and violet slots nearly disappear on a dark background."},
+ {n:"Grafana classic",who:"Grafana classic palette",c:["#7EB26D","#EAB839","#6ED0E0","#EF843C","#E24D42","#1F78C1","#BA43A9","#705DA0","#508642","#CCA300"],
+  s:{cvd:1.7,normal:12.1,lowL:4,lowD:1,band:2},t:"Built for dark dashboards, where it glows. Purple and violet (slots 7 and 8) collapse for color-blind readers, and half of it is too pale for white."},
+ {n:"Metabase",who:"Metabase default chart accents",c:["#509EE3","#88BF4D","#A989C5","#EF8C8C","#F9D45C","#F2A86F","#98D9D9","#7172AD"],
+  s:{cvd:9.8,normal:12,lowL:7,lowD:0,band:5},t:"Friendly pastels that suit dark backgrounds. On white, 7 of 8 are below 3:1, and yellow and orange blur together."},
+ {n:"Apache Superset",who:"“Superset Colors” scheme",c:["#1FA8C9","#454E7C","#5AC189","#FF7F44","#666666","#E04355","#FCC700","#A868B7","#3CCCCB","#A38F79"],
+  s:{cvd:3.1,normal:21.9,lowL:4,lowD:2,band:3},t:"Distinct for typical vision, but uses a plain grey as series 5. It reads as “Other” and merges with the red beside it for color-blind readers."},
+ {n:"IBM Carbon",who:"Carbon Charts, IBM Cognos-style dashboards",c:["#6929c4","#1192e8","#005d5d","#9f1853","#fa4d56","#570408","#198038","#002d9c","#ee538b","#b28600","#009d9a","#012749","#8a3800","#a56eff"],
+  s:{cvd:6.3,normal:21.6,lowL:0,lowD:5,band:3},t:"The most rigorous on white: every color clears 3:1 and the order is designed. Very dark slots mean it needs its own dark-theme palette, which Carbon ships."},
+ {n:"Ours · Spectrum",who:"Proposed for Zendesk analytics",ours:1,c:["#406cc4","#b15204","#01a2a3","#7f7004","#c66c99","#4b7d04","#a47ebf","#c63f46"],
+  s:{cvd:15.7,normal:19.1,lowL:0,lowD:0,band:0},t:"For comparison. Passes every check on both backgrounds with a single set of hex values."}];
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function mini(c){
+  const cols=c.slice(0,8),W=460,H=120,n=6,bw=46,gap=(W-n*bw)/(n-1);let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Sample stacked bars in this palette">`;
+  const base=[9,7,4.5,3.8,2.6,1.8,1.4,0.9],tot=31;
+  for(let j=0;j<n;j++){let y=H;const k=0.78+0.04*j;cols.forEach((col,i)=>{const h=base[i]/tot*H*k*(1+Math.sin(i+j)*0.12);y-=h;
+    s+=`<rect x="${j*(bw+gap)}" y="${y.toFixed(1)}" width="${bw}" height="${Math.max(0,h-2).toFixed(1)}" fill="${col}"${i===cols.length-1?' rx="3"':''}/>`})}
+  return s+`</svg>`;
+}
+const pill=(ok,warn,txt)=>`<span class="pill ${ok?"pass":warn?"warn":"fail"}">${txt}</span>`;
+function scores(s){return [
+  pill(s.cvd>=8,s.cvd>=6,`Color-blind ΔE ${s.cvd}`),
+  pill(s.normal>=15,false,`Typical ΔE ${s.normal}`),
+  pill(s.lowL===0,s.lowL<=2,s.lowL?`${s.lowL} below 3:1 on white`:"All ≥ 3:1 on white"),
+  pill(s.lowD===0,s.lowD<=2,s.lowD?`${s.lowD} below 3:1 on dark`:"All ≥ 3:1 on dark")].join("")}
+document.getElementById("gallery").innerHTML=P.map(p=>`<article class="card${p.ours?" ours":""}">
+  <div class="cardhead"><h3>${esc(p.n)}</h3><span class="small muted">${esc(p.who)}</span></div>
+  <div class="strip cvd-target">${p.c.map((h,i)=>`<div class="${i>=8?"unscored":""}" style="background:${h}" title="${i+1} · ${h}"><span>${i+1}</span></div>`).join("")}</div>
+  <div class="hexes">${p.c.join("  ")}</div>
+  <div class="mini cvd-target">${mini(p.c)}</div>
+  <div class="scores">${scores(p.s)}</div>
+  <p class="take small">${esc(p.t)}</p></article>`).join("");
+document.getElementById("compare").innerHTML=P.slice().sort((a,b)=>b.s.cvd-a.s.cvd).map(p=>`<tr>
+  <td>${p.ours?"<b>":""}${esc(p.n)}${p.ours?"</b>":""}</td>
+  <td><span class="dots">${p.c.slice(0,8).map(h=>`<i style="background:${h}"></i>`).join("")}</span></td>
+  <td class="num">${p.s.cvd}</td><td class="num">${p.s.normal}</td><td class="num">${p.s.lowL}</td><td class="num">${p.s.lowD}</td><td class="num">${p.s.band}</td></tr>`).join("");
+function seg(id,fn){const g=document.getElementById(id);g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));fn(b.dataset.v)})}
+seg("themeSeg",v=>{if(v==="system")document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",v)});
+seg("cvdSeg",v=>document.querySelectorAll(".cvd-target").forEach(n=>n.style.filter=v==="none"?"":`url(#${v})`));
+})();
+</script>
+</body>
+</html>
