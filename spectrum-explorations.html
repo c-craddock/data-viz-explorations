@@ -136,21 +136,6 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
       <button type="button" data-v="none" aria-pressed="true">Typical</button><button type="button" data-v="deutan" aria-pressed="false">Deuteranopia</button><button type="button" data-v="protan" aria-pressed="false">Protanopia</button><button type="button" data-v="tritan" aria-pressed="false">Tritanopia</button><button type="button" data-v="gray" aria-pressed="false">Grayscale</button></span></div>
   </div>
 
-  <!-- WHY -->
-  <section class="block">
-    <div class="head">
-      <h2>Why the UI steps can't be used as-is</h2>
-      <p class="muted">The ramps are luminance-matched: every hue at a given step has the same contrast (all 700s ≈ 5.0:1 on white). That's right for UI, but it means same-step hues differ <em>only</em> in hue. Red, yellow and green collapse for the ~8% of men with red-green color blindness. Chart palettes must mix steps (500, 600, 700) so lightness does part of the work. Turn on a simulation above to see the difference.</p>
-    </div>
-    <div class="strip cvd-target">
-      <span class="small muted">All step 700</span>
-      <div class="row"><div style="background:#c63f46"></div><div style="background:#7f7004"></div><div style="background:#4b7d04"></div><div style="background:#406cc4"></div><div style="background:#8d59b1"></div></div>
-      <span class="small muted">Mixed steps</span>
-      <div class="row"><div style="background:#406cc4"></div><div style="background:#a47ebf"></div><div style="background:#7f7004"></div><div style="background:#d46f74"></div><div style="background:#4b7d04"></div></div>
-    </div>
-    <p class="small muted">There's also a lightness gap between 700 (OKLCH L≈0.55) and 800 (L≈0.38). Nothing in 800–1200 is usable as a series color on light or dark surfaces, so chart colors live in 500–700.</p>
-  </section>
-
   <!-- SPECTRUM -->
   <section class="block" id="spectrum">
     <div class="head">
