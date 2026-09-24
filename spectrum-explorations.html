@@ -11,6 +11,7 @@
   --code:#f7f7f7; --pill-pass:#eff9e6; --pill-pass-ink:#2f4913;
   --mid:#eae9e8;
   --r-surface:24px; --r-sm:10px;
+  --status-bg:#faf6da; --status-ink:#4c4207; --status-dot:#b09b0f;
   --font:"SF Pro Text","SF Pro",-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;
   --mono:var(--font);
 }
@@ -18,18 +19,21 @@
   :root:not([data-theme="light"]){color-scheme:dark;
     --page:#19191a; --surface:#202121; --ink:#f7f7f7; --ink-2:#b7b7b3; --ink-3:#8b8e89;
     --line:#2f3130; --axis:#404241; --ring:rgba(247,247,247,.10); --accent:#7f9bd3; --accent-ink:#0c1322;
-    --code:#19191a; --pill-pass:#25390f; --pill-pass-ink:#c6e8a1; --mid:#404241;}
+    --code:#19191a; --pill-pass:#25390f; --pill-pass-ink:#c6e8a1; --mid:#404241; --status-bg:#262203; --status-ink:#eedf7a; --status-dot:#ccb748;}
 }
 :root[data-theme="dark"]{color-scheme:dark;
   --page:#19191a; --surface:#202121; --ink:#f7f7f7; --ink-2:#b7b7b3; --ink-3:#8b8e89;
   --line:#2f3130; --axis:#404241; --ring:rgba(247,247,247,.10); --accent:#7f9bd3; --accent-ink:#0c1322;
-  --code:#19191a; --pill-pass:#25390f; --pill-pass-ink:#c6e8a1; --mid:#404241;}
+  --code:#19191a; --pill-pass:#25390f; --pill-pass-ink:#c6e8a1; --mid:#404241; --status-bg:#262203; --status-ink:#eedf7a; --status-dot:#ccb748;}
 
 *{box-sizing:border-box}
 body{margin:0;background:var(--page);color:var(--ink);font:14px/20px var(--font);letter-spacing:-.15px;padding-inline:16px;padding-block:0 64px}
 .wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
 header.top{padding-block:40px 8px;display:flex;flex-direction:column;gap:10px}
 .eyebrow{font-size:12px;line-height:16px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+.titlerow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.status-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;line-height:16px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--status-bg);color:var(--status-ink);white-space:nowrap}
+.status-pill i{width:7px;height:7px;border-radius:50%;background:var(--status-dot)}
 h1{font-size:32px;line-height:38px;font-weight:600;letter-spacing:-.6px;margin:0;text-wrap:balance}
 h2{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.4px;margin:0;text-wrap:balance}
 h3{font-size:15px;line-height:20px;font-weight:600;margin:0}
@@ -125,8 +129,8 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
   <header class="top">
     <a class="small" href="index.html" style="color:var(--accent)">← Our chart palettes</a>
     <span class="eyebrow">Data viz · Color guidelines · Exploration</span>
-    <h1>Spectrum alternatives without red or green</h1>
-    <p class="lede">A copy of the chart palettes page that explores replacements for Spectrum using no red or green, so series colors never read as good/bad and never collide with status colors. Flora leaves three hues once red and green are gone (blue, purple and yellow), so every option adds the orange ramp, some with magenta too, and repeats hues at different steps. (Flora's hues alone top out at six colors.) Every option is validated in light and dark with the same checks as before.</p>
+    <div class="titlerow"><h1>Data viz colour palettes (no red or green)</h1><span class="status-pill" role="status"><i aria-hidden="true"></i>In progress</span></div>
+    <p class="lede">Colour palette explorations for data viz using no red or green, so series colors never read as good/bad and never collide with status colors. Flora leaves three hues once red and green are gone (blue, purple and yellow), so every option adds the orange ramp, some with magenta too, and repeats hues at different steps. (Flora's hues alone top out at six colors.) Every option is validated in light and dark with the same checks as before.</p>
   </header>
 
   <div class="controls" role="group" aria-label="Preview options">
