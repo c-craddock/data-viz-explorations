@@ -2,9 +2,8 @@
 
 Chart color palettes derived from the design system ramps in the Data viz color guidelines Figma file.
 
-- [`index.html`](index.html): the palette reference page, with swatches, sample charts, light/dark and color-blindness previews, and tokens.
+- [`index.html`](index.html): data viz colour palettes with no red or green: palette options with swatches, sample charts, light/dark and color-blindness previews, and tokens.
 - [`bi-palettes.html`](bi-palettes.html): default palettes from Tableau, Power BI, Grafana, Metabase, Superset, D3 and IBM Carbon, scored with the same checks.
-- [`spectrum-explorations.html`](spectrum-explorations.html): the Spectrum options explored before settling on the current palette (no red or green).
 - [`first-response-bucket-chart.html`](first-response-bucket-chart.html): an earlier chart exploration.
 - [`scripts/validate.mjs`](scripts/validate.mjs): re-checks every categorical palette. Run `node scripts/validate.mjs`.
 
