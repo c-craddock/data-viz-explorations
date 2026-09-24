@@ -59,6 +59,8 @@ a{color:var(--accent)}
 .pill.fail{background:var(--fail);color:var(--fail-ink)}
 .pill.warn{background:var(--warn);color:var(--warn-ink)}
 .take{color:var(--ink-2)}
+.score{display:inline-block;min-width:3.2em}
+.pill.mk{padding:2px 8px;font-size:11px;font-weight:600;white-space:nowrap}
 
 section.block{background:var(--surface);border-radius:24px;padding:28px;display:flex;flex-direction:column;gap:16px;box-shadow:0 0 0 1px var(--ring)}
 @media (max-width:600px){section.block{padding:20px 16px;border-radius:16px}}
@@ -104,9 +106,9 @@ ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;max-wid
   <div class="gallery" id="gallery"></div>
 
   <section class="block">
-    <div><h2>Side by side</h2><p class="muted small">Sorted by worst color-blind separation between neighbouring colors. Target ≥ 8 for color-blind readers and ≥ 15 for typical vision (OKLab ΔE×100). Contrast counts how many of the first 8 colors fall below 3:1 on each background.</p></div>
+    <div><h2>Side by side</h2><p class="muted small">Separation scores how different each color looks from the one next to it. Higher is better, and each palette is judged on its closest pair. <b>Color-blind</b> simulates red-green color blindness: 8 or more passes, 6–8 is borderline. <b>Typical vision</b>: 15 or more passes. The contrast columns count how many of the first 8 colors are hard to see (below 3:1) on each background. Sorted from best to worst for color-blind readers.</p></div>
     <div class="tablewrap cvd-target"><table>
-      <thead><tr><th>Palette</th><th>First 8</th><th>Color-blind ΔE</th><th>Typical ΔE</th><th>Below 3:1 on white</th><th>Below 3:1 on dark</th><th>Too light/dark or greyish</th></tr></thead>
+      <thead><tr><th>Palette</th><th>First 8</th><th>Color-blind separation</th><th>Typical-vision separation</th><th>Below 3:1 on white</th><th>Below 3:1 on dark</th><th>Too light/dark or greyish</th></tr></thead>
       <tbody id="compare"></tbody>
     </table></div>
   </section>
@@ -163,6 +165,8 @@ function mini(c){
     s+=`<rect x="${j*(bw+gap)}" y="${y.toFixed(1)}" width="${bw}" height="${Math.max(0,h-2).toFixed(1)}" fill="${col}"${i===cols.length-1?' rx="3"':''}/>`})}
   return s+`</svg>`;
 }
+const mark=(v,pass,warn)=>{const st=v>=pass?["pass","✓","Pass"]:(warn&&v>=warn)?["warn","!","Borderline"]:["fail","✕","Fail"];
+  return `<span class="score">${v}</span><span class="pill ${st[0]} mk"><span aria-hidden="true">${st[1]}</span> ${st[2]}</span>`};
 const pill=(ok,warn,txt)=>`<span class="pill ${ok?"pass":warn?"warn":"fail"}">${txt}</span>`;
 function scores(s){return [
   pill(s.cvd>=8,s.cvd>=6,`Color-blind ΔE ${s.cvd}`),
@@ -179,7 +183,7 @@ document.getElementById("gallery").innerHTML=P.map(p=>`<article class="card${p.o
 document.getElementById("compare").innerHTML=P.slice().sort((a,b)=>b.s.cvd-a.s.cvd).map(p=>`<tr>
   <td>${p.ours?"<b>":""}${esc(p.n)}${p.ours?"</b>":""}</td>
   <td><span class="dots">${p.c.slice(0,8).map(h=>`<i style="background:${h}"></i>`).join("")}</span></td>
-  <td class="num">${p.s.cvd}</td><td class="num">${p.s.normal}</td><td class="num">${p.s.lowL}</td><td class="num">${p.s.lowD}</td><td class="num">${p.s.band}</td></tr>`).join("");
+  <td class="num">${mark(p.s.cvd,8,6)}</td><td class="num">${mark(p.s.normal,15)}</td><td class="num">${p.s.lowL}</td><td class="num">${p.s.lowD}</td><td class="num">${p.s.band}</td></tr>`).join("");
 function seg(id,fn){const g=document.getElementById(id);g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));fn(b.dataset.v)})}
 seg("themeSeg",v=>{if(v==="system")document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",v)});
 seg("cvdSeg",v=>document.querySelectorAll(".cvd-target").forEach(n=>n.style.filter=v==="none"?"":`url(#${v})`));
