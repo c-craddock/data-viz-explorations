@@ -172,11 +172,11 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
   <section class="block" id="spectrum">
     <div class="head">
       <span class="eyebrow">Categorical · Option B · Recommended default</span>
-      <h2>Spectrum: eight hues, system plus three inspired ramps</h2>
-      <p class="muted">Adds orange, teal and magenta ramps built on the system's own per-step lightness and chroma curve, so they sit in the family. Leading with blue, orange and teal keeps red, green and yellow (which read as status) out of the first slots, and makes it the stronger palette overall.</p>
+      <h2>Spectrum: eight colors, no red or green</h2>
+      <p class="muted">Flora's blue, yellow and purple plus two new ramps, orange and magenta, built on the system's own per-step lightness and chroma curve so they sit in the family. There's no red or green, so a series never reads as good or bad and never looks like a critical or success status. Five different hues lead. The last three repeat blue, yellow and orange one step off.</p>
     </div>
     <div class="swatches cvd-target" id="specSw"></div>
-    <div class="stats"><span class="pill">Worst adjacent CVD ΔE 15.7 (target ≥ 8)</span><span class="pill">Normal-vision ΔE 19.1 (floor 15)</span><span class="pill">All ≥ 3:1 on white and on grey/1000</span><span class="pill">Slots 1–3 validated all-pairs (ΔE 16.2) for scatter/maps</span></div>
+    <div class="stats"><span class="pill">Worst adjacent CVD ΔE 15.6 (target ≥ 8)</span><span class="pill">Normal-vision ΔE 16.7 (floor 15)</span><span class="pill">All ≥ 3:1 on white and on grey/1000</span><span class="pill neutral">Scatter/maps: blue/700 · orange/700 · magenta/600 (ΔE 10.2)</span></div>
     <div class="chart cvd-target">
       <div class="charthead"><h3 id="specTitle"></h3><span class="seg" id="specType" role="group" aria-label="Chart type"></span></div>
       <div class="legend" id="specLegend"></div>
@@ -218,7 +218,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
       <thead><tr><th>Role</th><th>Token</th><th>Hex</th><th>On white</th><th>On grey/1000</th><th>Example</th></tr></thead>
       <tbody id="statusRows"></tbody>
     </table></div>
-    <p class="small muted">Critical is the system's red/700, which is also Spectrum slot 8. In any chart that shows status, cap Spectrum at seven series (fold the rest into "Other" in grey/600) so a series never impersonates an alert.</p>
+    <p class="small muted">Spectrum has no red or green, so no series can be mistaken for critical or good. Warning (yellow) and serious (orange) do share hue families with Spectrum's yellow and orange slots, so the icon and label carry the meaning, never color alone.</p>
   </section>
 
   <!-- RULES -->
@@ -227,7 +227,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
     <ul class="rules">
       <li><b>Assign slots in order, never cycle.</b> Series 1 always gets slot 1. A ninth series becomes "Other" (grey/600, <code>#8b8e89</code>) or a small multiple, never a new hue.</li>
       <li><b>Color follows the entity, not its rank.</b> If a filter removes a series, the survivors keep their colors.</li>
-      <li><b>Scatter, bubble, maps, small multiples:</b> any two marks can touch, so use only the three all-pairs-safe slots.</li>
+      <li><b>Scatter, bubble, maps, small multiples:</b> any two marks can touch, so use only the three-color scatter set (Spectrum: blue/700 · orange/700 · magenta/600).</li>
       <li><b>Two or more series always get a legend;</b> four or fewer also get direct labels. Text stays in grey ink, never in the series color.</li>
       <li><b>Separate fills with a 2px surface gap</b> (stacked segments, adjacent bars). Lines are 2px; markers ≥ 8px.</li>
       <li><b>Use chart chrome from grey:</b> gridlines grey/200 (dark grey/900), baseline grey/300 (dark grey/800), axis labels grey/600.</li>
@@ -236,7 +236,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
 
   <!-- TOKENS -->
   <section class="block">
-    <div class="head"><h2>Tokens</h2><p class="muted">Proposed names under a <code>dataviz</code> namespace. The three inspired ramps are included in full (100–1200) so they can be added to the Figma file alongside the existing ramps.</p></div>
+    <div class="head"><h2>Tokens</h2><p class="muted">Proposed names under a <code>dataviz</code> namespace. The two new ramps, orange and magenta, are included in full (100–1200) so they can be added to the Figma file alongside the existing ramps.</p></div>
     <div class="codehead"><h3>CSS custom properties</h3><button type="button" class="copy" data-target="cssOut">Copy CSS</button></div>
     <pre id="cssOut"></pre>
     <div class="codehead"><h3>New ramps (JSON)</h3><button type="button" class="copy" data-target="jsonOut">Copy JSON</button></div>
@@ -251,9 +251,10 @@ const CORE=[
  {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Yellow",t:"yellow/700",h:"#7f7004"},
  {n:"Red",t:"red/600",h:"#d46f74"},{n:"Green",t:"green/700",h:"#4b7d04"}];
 const SPEC=[
- {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Orange",t:"orange/700",h:"#b15204",nw:1},{n:"Teal",t:"teal/600",h:"#01a2a3",nw:1},
- {n:"Yellow",t:"yellow/700",h:"#7f7004"},{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1},{n:"Green",t:"green/700",h:"#4b7d04"},
- {n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Red",t:"red/700",h:"#c63f46"}];
+ {n:"Blue",t:"blue/600",h:"#698cd3"},{n:"Yellow",t:"yellow/600",h:"#a08d0e"},{n:"Purple",t:"purple/600",h:"#a47ebf"},
+ {n:"Orange",t:"orange/700",h:"#b15204",nw:1},{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1},{n:"Yellow",t:"yellow/700",h:"#7f7004"},
+ {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Orange",t:"orange/600",h:"#ca7541",nw:1}];
+const SPEC_SCATTER=[SPEC[6],SPEC[3],SPEC[4]];
 const NEW={
  orange:["#fff3ec","#fee3d5","#ffd2ba","#e8a681","#d68455","#ca7541","#b15204","#69320c","#522709","#361907","#210f05","#150904"],
  teal:["#e8f9f9","#ccf2f2","#adebea","#67cac9","#07b1b2","#01a2a3","#018282","#034e4e","#033d3d","#012828","#001818","#001010"],
@@ -316,7 +317,7 @@ const TYPES=[["line","Line"],["area","Stacked area"],["stacked","Stacked bar"],[
 const CHARTS={
   core:{pal:CORE,trio:[CORE[0],CORE[1],{n:"Yellow",t:"yellow/600",h:"#a08d0e"}],series:teams,x:weeks,data:coreData,type:"line",
     title:"Tickets solved by team",note:"Sample data · thousands of tickets per week"},
-  spec:{pal:SPEC,trio:SPEC.slice(0,3),series:channels,x:bw,data:barData,type:"stacked",
+  spec:{pal:SPEC,trio:SPEC_SCATTER,series:channels,x:bw,data:barData,type:"stacked",
     title:"Tickets created by channel",note:"Sample data · thousands of tickets per week"}};
 function nice(top){const p=10**Math.floor(Math.log10(top/4));const k=[1,2,2.5,5,10].find(k=>k*p>=top/4);const step=k*p;return {max:Math.ceil(top/step)*step,step}}
 const fmt=v=>(Math.round(v*10)/10)+"k";
@@ -430,7 +431,7 @@ function tokens(){
   DIV_D.forEach((c,i)=>L.push(`  --dataviz-div-${i-4<0?"n"+(4-i):i===4?"mid":"p"+(i-4)}: ${c};`));L.push("}");
   $("cssOut").textContent=L.join("\n");
   const steps=[100,200,300,400,500,600,700,800,900,1000,1100,1200];
-  const o={};for(const k in NEW){o[k]={};NEW[k].forEach((h,i)=>o[k][steps[i]]=h)}
+  const o={};for(const k of ["orange","magenta"]){o[k]={};NEW[k].forEach((h,i)=>o[k][steps[i]]=h)}
   $("jsonOut").textContent=JSON.stringify(o,null,2);
 }
 document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{const el=$(b.dataset.target);const t=el.textContent;

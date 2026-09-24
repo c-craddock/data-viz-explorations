@@ -11,9 +11,9 @@
 // Scatter/map subsets are checked over all pairs instead of neighbours.
 
 const PALETTES = {
-  "Spectrum (8)": ["#406cc4", "#b15204", "#01a2a3", "#7f7004", "#c66c99", "#4b7d04", "#a47ebf", "#c63f46"],
+  "Spectrum (8)": ["#698cd3", "#a08d0e", "#a47ebf", "#b15204", "#c66c99", "#7f7004", "#406cc4", "#ca7541"],
   "Core (5)": ["#406cc4", "#a47ebf", "#7f7004", "#d46f74", "#4b7d04"],
-  "Spectrum scatter trio": { all: true, colors: ["#406cc4", "#b15204", "#01a2a3"] },
+  "Spectrum scatter trio": { all: true, colors: ["#406cc4", "#b15204", "#c66c99"] },
   "Core scatter trio": { all: true, colors: ["#406cc4", "#a47ebf", "#a08d0e"] },
 };
 const MODES = { light: { surface: "#ffffff", band: [0.43, 0.77] }, dark: { surface: "#202121", band: [0.48, 0.67] } };
