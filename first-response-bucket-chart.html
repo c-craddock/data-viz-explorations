@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>First response time — bucket chart mockup</title>
+<style>
+  :root {
+    color-scheme: light;
+    --page:           #f9f9f7;
+    --surface-1:      #fcfcfb;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --gridline:       #e1e0d9;
+    --baseline:       #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-1:       #2a78d6;   /* complete bucket */
+    --series-1-light: #9ec5f4;   /* in-progress bucket, one step lighter */
+    --tooltip-bg:     #0b0b0b;
+    --tooltip-text:   #ffffff;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --page:           #0d0d0d;
+      --surface-1:      #1a1a19;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --gridline:       #2c2c2a;
+      --baseline:       #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-1:       #3987e5;
+      --series-1-light: #184f95;
+      --tooltip-bg:     #ffffff;
+      --tooltip-text:   #0b0b0b;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding-block: 40px;
+    padding-inline: 16px;
+    background: var(--page);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 720px;
+    background: var(--surface-1);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 28px 20px;
+  }
+
+  .card-header { margin-bottom: 4px; }
+  .card-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0 0 4px;
+  }
+  .card-caption {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin: 0 0 28px;
+    max-width: 46ch;
+    line-height: 1.5;
+  }
+
+  .chart-wrap { display: flex; }
+
+  .y-axis {
+    position: relative;
+    width: 34px;
+    flex-shrink: 0;
+    height: 220px;
+  }
+  .y-tick-label {
+    position: absolute;
+    right: 10px;
+    transform: translateY(50%);
+    font-size: 11px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .plot {
+    position: relative;
+    flex: 1;
+    height: 220px;
+  }
+  .gridline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: var(--gridline);
+  }
+  .baseline {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--baseline);
+  }
+
+  .bars-row {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+  }
+  .bar-col {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+    cursor: default;
+  }
+  .bar-col:focus { outline: none; }
+  .bar-hit {
+    position: absolute;
+    inset: 0;
+  }
+  .bar {
+    width: 22px;
+    background: var(--series-1);
+    border-radius: 4px 4px 0 0;
+    transition: filter 0.12s ease;
+  }
+  .bar.in-progress {
+    background: var(--series-1-light);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.35) 0 3px,
+      transparent 3px 7px
+    );
+  }
+  .bar-col:hover .bar,
+  .bar-col:focus-visible .bar {
+    filter: brightness(0.92);
+  }
+  :root:not([data-theme="light"]) .bar-col:hover .bar,
+  :root:not([data-theme="light"]) .bar-col:focus-visible .bar {
+    filter: brightness(1.15);
+  }
+
+  .x-axis {
+    display: flex;
+    margin-left: 34px;
+    margin-top: 8px;
+  }
+  .x-label-col {
+    flex: 1;
+    text-align: center;
+    font-size: 11.5px;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+  .x-label-col .today-flag {
+    display: block;
+    font-size: 10px;
+    color: var(--text-muted);
+  }
+
+  .tooltip {
+    position: absolute;
+    bottom: calc(100% + 10px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--tooltip-bg);
+    color: var(--tooltip-text);
+    padding: 8px 11px;
+    border-radius: 6px;
+    font-size: 12px;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.1s ease;
+    z-index: 5;
+  }
+  .bar-col:hover .tooltip,
+  .bar-col:focus-visible .tooltip {
+    opacity: 1;
+  }
+  .tooltip .tt-value {
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .tooltip .tt-value .unit {
+    font-weight: 400;
+    opacity: 0.75;
+    margin-left: 4px;
+  }
+  .tooltip .tt-range {
+    display: block;
+    margin-top: 3px;
+    opacity: 0.8;
+    font-size: 11px;
+  }
+  .tooltip .tt-note {
+    display: block;
+    margin-top: 3px;
+    opacity: 0.7;
+    font-size: 10.5px;
+    font-style: italic;
+  }
+
+  .footnote {
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+    font-size: 11.5px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .footnote .swatch {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 2px;
+    background: var(--series-1-light);
+    background-image: repeating-linear-gradient(
+      45deg,
+      rgba(255,255,255,0.35) 0 2px,
+      transparent 2px 4px
+    );
+    margin-right: 5px;
+    vertical-align: middle;
+  }
+
+  details.table-toggle { margin-top: 10px; }
+  details.table-toggle summary {
+    font-size: 12px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    width: fit-content;
+  }
+  table.data-table {
+    margin-top: 10px;
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 12px;
+  }
+  table.data-table th, table.data-table td {
+    text-align: left;
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--gridline);
+    color: var(--text-secondary);
+  }
+  table.data-table td.num { font-variant-numeric: tabular-nums; color: var(--text-primary); }
+  table.data-table th { color: var(--text-muted); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="card-header">
+    <p class="card-title">First response time — last 7 periods</p>
+    <p class="card-caption">Each bar is a rolling 24-hour window ending at the report's reference time, not a calendar day — so a bar labeled "2 days ago" covers roughly 2–3 days before now, not midnight-to-midnight.</p>
+  </div>
+
+  <div class="chart-wrap">
+    <div class="y-axis" id="yAxis"></div>
+    <div class="plot" id="plot">
+      <div class="bars-row" id="barsRow"></div>
+    </div>
+  </div>
+
+  <div class="x-axis" id="xAxis"></div>
+
+  <div class="footnote">
+    <span class="swatch"></span>Today's bar is still in progress — it covers the rolling window through the current moment and will keep growing until the full 24 hours has elapsed.
+  </div>
+
+  <details class="table-toggle">
+    <summary>View as table</summary>
+    <table class="data-table" id="dataTable">
+      <thead>
+        <tr><th>Bucket</th><th>Window</th><th>Total rows</th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </details>
+</div>
+
+<script>
+  // ---- Demo data: relative-to-now rolling 24h buckets, oldest -> newest ----
+  const buckets = [
+    { relLabel: "6 days ago",  dateLabel: "Sep 9",  startLabel: "Sep 9, 5:31 AM",  endLabel: "Sep 10, 5:31 AM", value: 3, inProgress: false },
+    { relLabel: "5 days ago",  dateLabel: "Sep 10", startLabel: "Sep 10, 5:31 AM", endLabel: "Sep 11, 5:31 AM", value: 5, inProgress: false },
+    { relLabel: "4 days ago",  dateLabel: "Sep 11", startLabel: "Sep 11, 5:31 AM", endLabel: "Sep 12, 5:31 AM", value: 2, inProgress: false },
+    { relLabel: "3 days ago",  dateLabel: "Sep 12", startLabel: "Sep 12, 5:31 AM", endLabel: "Sep 13, 5:31 AM", value: 4, inProgress: false },
+    { relLabel: "2 days ago",  dateLabel: "Sep 13", startLabel: "Sep 13, 5:31 AM", endLabel: "Sep 14, 5:31 AM", value: 6, inProgress: false },
+    { relLabel: "Yesterday",   dateLabel: "Sep 14", startLabel: "Sep 14, 5:31 AM", endLabel: "Sep 15, 5:31 AM", value: 3, inProgress: false },
+    { relLabel: "Today",       dateLabel: "Sep 15", startLabel: "Sep 15, 5:31 AM", endLabel: "now",             value: 5, inProgress: true  },
+  ];
+
+  const CHART_H = 220;
+  const Y_MAX = 6; // rounded to a clean top tick
+  const Y_TICKS = [0, 2, 4, 6];
+
+  // Y axis
+  const yAxis = document.getElementById("yAxis");
+  const plot = document.getElementById("plot");
+  Y_TICKS.forEach(t => {
+    const yFrac = t / Y_MAX;
+    const bottomPx = yFrac * CHART_H;
+
+    const label = document.createElement("div");
+    label.className = "y-tick-label";
+    label.style.bottom = bottomPx + "px";
+    label.textContent = t;
+    yAxis.appendChild(label);
+
+    if (t > 0) {
+      const grid = document.createElement("div");
+      grid.className = "gridline";
+      grid.style.bottom = bottomPx + "px";
+      plot.appendChild(grid);
+    }
+  });
+  const baseline = document.createElement("div");
+  baseline.className = "baseline";
+  plot.appendChild(baseline);
+
+  // Bars + tooltips
+  const barsRow = document.getElementById("barsRow");
+  const xAxis = document.getElementById("xAxis");
+  const tableBody = document.querySelector("#dataTable tbody");
+
+  buckets.forEach(b => {
+    const heightPx = (b.value / Y_MAX) * CHART_H;
+
+    // bar column
+    const col = document.createElement("div");
+    col.className = "bar-col";
+    col.tabIndex = 0;
+    col.setAttribute("role", "img");
+    col.setAttribute(
+      "aria-label",
+      `${b.value} rows, ${b.startLabel} to ${b.endLabel}${b.inProgress ? ", in progress" : ""}`
+    );
+
+    const bar = document.createElement("div");
+    bar.className = "bar" + (b.inProgress ? " in-progress" : "");
+    bar.style.height = heightPx + "px";
+    col.appendChild(bar);
+
+    const tooltip = document.createElement("div");
+    tooltip.className = "tooltip";
+    const ttValue = document.createElement("span");
+    ttValue.className = "tt-value";
+    ttValue.textContent = b.value;
+    const unit = document.createElement("span");
+    unit.className = "unit";
+    unit.textContent = "rows";
+    ttValue.appendChild(unit);
+    const ttRange = document.createElement("span");
+    ttRange.className = "tt-range";
+    ttRange.textContent = `${b.startLabel} – ${b.endLabel}`;
+    tooltip.appendChild(ttValue);
+    tooltip.appendChild(ttRange);
+    if (b.inProgress) {
+      const ttNote = document.createElement("span");
+      ttNote.className = "tt-note";
+      ttNote.textContent = "In progress — updates through now";
+      tooltip.appendChild(ttNote);
+    }
+    col.appendChild(tooltip);
+    barsRow.appendChild(col);
+
+    // x-axis label
+    const xCol = document.createElement("div");
+    xCol.className = "x-label-col";
+    xCol.textContent = b.relLabel;
+    if (b.inProgress) {
+      const flag = document.createElement("span");
+      flag.className = "today-flag";
+      flag.textContent = "(in progress)";
+      xCol.appendChild(flag);
+    }
+    xAxis.appendChild(xCol);
+
+    // table row
+    const tr = document.createElement("tr");
+    const tdBucket = document.createElement("td");
+    tdBucket.textContent = b.relLabel + (b.inProgress ? " (in progress)" : "");
+    const tdWindow = document.createElement("td");
+    tdWindow.textContent = `${b.startLabel} – ${b.endLabel}`;
+    const tdValue = document.createElement("td");
+    tdValue.className = "num";
+    tdValue.textContent = b.value;
+    tr.appendChild(tdBucket);
+    tr.appendChild(tdWindow);
+    tr.appendChild(tdValue);
+    tableBody.appendChild(tr);
+  });
+</script>
+
+</body>
+</html>

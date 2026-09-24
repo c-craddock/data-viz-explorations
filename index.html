@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Analytics Chart Palettes</title>
+<style>
+:root{
+  --page:#f7f7f7; --surface:#ffffff; --ink:#2f3130; --ink-2:#646864; --ink-3:#8b8e89;
+  --line:#eae9e8; --axis:#dcdcda; --ring:rgba(47,49,48,.10); --accent:#406cc4; --accent-ink:#ffffff;
+  --code:#f7f7f7; --pill-pass:#eff9e6; --pill-pass-ink:#2f4913;
+  --mid:#eae9e8;
+  --r-surface:24px; --r-sm:10px;
+  --font:"SF Pro Text",-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){color-scheme:dark;
+    --page:#19191a; --surface:#202121; --ink:#f7f7f7; --ink-2:#b7b7b3; --ink-3:#8b8e89;
+    --line:#2f3130; --axis:#404241; --ring:rgba(247,247,247,.10); --accent:#7f9bd3; --accent-ink:#0c1322;
+    --code:#19191a; --pill-pass:#25390f; --pill-pass-ink:#c6e8a1; --mid:#404241;}
+}
+:root[data-theme="dark"]{color-scheme:dark;
+  --page:#19191a; --surface:#202121; --ink:#f7f7f7; --ink-2:#b7b7b3; --ink-3:#8b8e89;
+  --line:#2f3130; --axis:#404241; --ring:rgba(247,247,247,.10); --accent:#7f9bd3; --accent-ink:#0c1322;
+  --code:#19191a; --pill-pass:#25390f; --pill-pass-ink:#c6e8a1; --mid:#404241;}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/20px var(--font);letter-spacing:-.15px;padding-inline:16px;padding-block:0 64px}
+.wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+header.top{padding-block:40px 8px;display:flex;flex-direction:column;gap:10px}
+.eyebrow{font-size:12px;line-height:16px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
+h1{font-size:32px;line-height:38px;font-weight:600;letter-spacing:-.6px;margin:0;text-wrap:balance}
+h2{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.4px;margin:0;text-wrap:balance}
+h3{font-size:15px;line-height:20px;font-weight:600;margin:0}
+p{margin:0;max-width:68ch}
+.lede{font-size:16px;line-height:24px;color:var(--ink-2);max-width:72ch}
+.muted{color:var(--ink-2)} .small{font-size:12px;line-height:16px}
+code,.mono{font-family:var(--mono);font-size:12px}
+
+.controls{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--page);padding-block:10px;display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:3px;gap:2px;flex-wrap:wrap}
+.seg button{font:inherit;font-size:13px;border:0;background:transparent;color:var(--ink-2);padding:5px 12px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--surface)}
+.seg button:focus-visible,.copy:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.ctl-label{font-size:12px;color:var(--ink-2);margin-right:6px}
+
+section.block{background:var(--surface);border-radius:var(--r-surface);padding:28px;display:flex;flex-direction:column;gap:20px;box-shadow:0 0 0 1px var(--ring)}
+@media (max-width:600px){section.block{padding:20px 16px;border-radius:16px}}
+.head{display:flex;flex-direction:column;gap:6px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:24px}
+
+/* swatches */
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(118px,1fr));gap:12px}
+.sw{display:flex;flex-direction:column;gap:6px}
+.chip{height:56px;border-radius:var(--r-sm);position:relative}
+.chip .slot{position:absolute;top:6px;left:8px;font-size:11px;font-weight:600;color:#fff;opacity:.9}
+.sw .nm{font-weight:600;font-size:13px}
+.sw .meta{font-size:11px;line-height:15px;color:var(--ink-2);font-family:var(--mono)}
+.new{display:inline-block;font-family:var(--font);font-size:10px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:1px 6px;border-radius:999px;border:1px dashed var(--ink-3);color:var(--ink-2);margin-left:4px;vertical-align:1px}
+
+.stats{display:flex;flex-wrap:wrap;gap:8px}
+.pill{font-size:12px;line-height:16px;padding:4px 10px;border-radius:999px;background:var(--pill-pass);color:var(--pill-pass-ink);font-variant-numeric:tabular-nums}
+.pill.neutral{background:var(--page);color:var(--ink-2)}
+
+.chart{display:flex;flex-direction:column;gap:10px;min-width:0}
+.chart svg{width:100%;height:auto;display:block;overflow:visible}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.axis text,.lbl{fill:var(--ink-3);font-size:11px;font-family:var(--font)}
+.dlabel{fill:var(--ink-2);font-size:11px;font-family:var(--font)}
+.grid line{stroke:var(--line);stroke-width:1}
+.base{stroke:var(--axis);stroke-width:1}
+.cvd-target{transition:filter .2s}
+@media (prefers-reduced-motion:reduce){.cvd-target{transition:none}}
+
+/* comparison strip */
+.strip{display:grid;grid-template-columns:110px 1fr;gap:8px 14px;align-items:center}
+.strip .row{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.strip .row div{height:40px;border-radius:8px}
+@media (max-width:520px){.strip{grid-template-columns:1fr}}
+
+/* ramps */
+.ramp{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px}
+.ramp div{height:40px;border-radius:6px;position:relative}
+.ramp small{position:absolute;bottom:3px;left:5px;font-size:10px;font-family:var(--mono)}
+.rampnote{display:flex;justify-content:space-between;font-size:11px;color:var(--ink-3)}
+
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{font-weight:600;font-size:12px;color:var(--ink-2)}
+td.num{font-variant-numeric:tabular-nums}
+.tablewrap{overflow-x:auto}
+.status{display:inline-flex;align-items:center;gap:6px;font-weight:600}
+.status svg{flex:none}
+
+ul.rules{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;max-width:80ch}
+ul.rules li::marker{color:var(--ink-3)}
+
+pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:12px;padding:14px 16px;overflow-x:auto;font-family:var(--mono);font-size:12px;line-height:18px;color:var(--ink);max-height:360px}
+.codehead{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.copy{font:inherit;font-size:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
+
+#tip{position:fixed;pointer-events:none;z-index:20;background:var(--ink);color:var(--surface);font-size:12px;line-height:16px;padding:7px 10px;border-radius:8px;max-width:240px;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+#tip b{font-weight:600}
+#tip .k{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:6px;vertical-align:0}
+.sample{font-size:11px;color:var(--ink-3)}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="deutan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.367322 0.860646 -0.227968 0 0  0.280085 0.672501 0.047413 0 0  -0.011820 0.042940 0.968881 0 0  0 0 0 1 0"/></filter>
+    <filter id="protan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="0.152286 1.052583 -0.204868 0 0  0.114503 0.786281 0.099216 0 0  -0.003882 -0.048116 1.051998 0 0  0 0 0 1 0"/></filter>
+    <filter id="tritan" color-interpolation-filters="linearRGB"><feColorMatrix type="matrix" values="1.255528 -0.076749 -0.178779 0 0  -0.078411 0.930809 0.147602 0 0  0.004733 0.691367 0.303900 0 0  0 0 0 1 0"/></filter>
+    <filter id="gray"><feColorMatrix type="saturate" values="0"/></filter>
+  </defs>
+</svg>
+
+<div class="wrap">
+  <header class="top">
+    <span class="eyebrow">Data viz · Color guidelines</span>
+    <h1>Chart palettes from the design system ramps</h1>
+    <p class="lede">Categorical, sequential, diverging and status palettes derived from the grey, red, yellow, green, blue and purple ramps. Every categorical palette is validated in light and dark: lightness band, chroma floor, protan/deutan separation, normal-vision separation and 3:1 contrast against the chart surface.</p>
+  </header>
+
+  <div class="controls" role="group" aria-label="Preview options">
+    <div><span class="ctl-label">Theme</span><span class="seg" id="themeSeg">
+      <button type="button" data-v="system" aria-pressed="true">System</button><button type="button" data-v="light" aria-pressed="false">Light</button><button type="button" data-v="dark" aria-pressed="false">Dark</button></span></div>
+    <div><span class="ctl-label">Simulate vision</span><span class="seg" id="cvdSeg">
+      <button type="button" data-v="none" aria-pressed="true">Typical</button><button type="button" data-v="deutan" aria-pressed="false">Deuteranopia</button><button type="button" data-v="protan" aria-pressed="false">Protanopia</button><button type="button" data-v="tritan" aria-pressed="false">Tritanopia</button><button type="button" data-v="gray" aria-pressed="false">Grayscale</button></span></div>
+  </div>
+
+  <!-- WHY -->
+  <section class="block">
+    <div class="head">
+      <h2>Why the UI steps can't be used as-is</h2>
+      <p class="muted">The ramps are luminance-matched: every hue at a given step has the same contrast (all 700s ≈ 5.0:1 on white). That's right for UI, but it means same-step hues differ <em>only</em> in hue. Red, yellow and green collapse for the ~8% of men with red-green color blindness. Chart palettes must mix steps (500, 600, 700) so lightness does part of the work. Turn on a simulation above to see the difference.</p>
+    </div>
+    <div class="strip cvd-target">
+      <span class="small muted">All step 700</span>
+      <div class="row"><div style="background:#c63f46"></div><div style="background:#7f7004"></div><div style="background:#4b7d04"></div><div style="background:#406cc4"></div><div style="background:#8d59b1"></div></div>
+      <span class="small muted">Core palette (mixed steps)</span>
+      <div class="row"><div style="background:#406cc4"></div><div style="background:#a47ebf"></div><div style="background:#7f7004"></div><div style="background:#d46f74"></div><div style="background:#4b7d04"></div></div>
+    </div>
+    <p class="small muted">There's also a lightness gap between 700 (OKLCH L≈0.55) and 800 (L≈0.38). Nothing in 800–1200 is usable as a series color on light or dark surfaces, so chart colors live in 500–700.</p>
+  </section>
+
+  <!-- CORE -->
+  <section class="block" id="core">
+    <div class="head">
+      <span class="eyebrow">Categorical · Option A</span>
+      <h2>Core: five hues, system steps only</h2>
+      <p class="muted">Every hex is an existing token. Use it when you have five or fewer series and want zero new colors. The same hexes work in light and dark.</p>
+    </div>
+    <div class="swatches cvd-target" id="coreSw"></div>
+    <div class="stats"><span class="pill">Worst adjacent CVD ΔE 9.0 (target ≥ 8)</span><span class="pill">Normal-vision ΔE 15.3 (floor 15)</span><span class="pill">All ≥ 3:1 on white and on grey/1000</span><span class="pill neutral">Scatter/maps: blue/700 · purple/600 · yellow/600</span></div>
+    <div class="chart cvd-target">
+      <h3>Median first reply time by team</h3>
+      <div class="legend" id="lineLegend"></div>
+      <div id="lineChart"></div>
+      <span class="sample">Sample data · hours, last 12 weeks</span>
+    </div>
+  </section>
+
+  <!-- SPECTRUM -->
+  <section class="block" id="spectrum">
+    <div class="head">
+      <span class="eyebrow">Categorical · Option B · Recommended default</span>
+      <h2>Spectrum: eight hues, system plus three inspired ramps</h2>
+      <p class="muted">Adds orange, teal and magenta ramps built on the system's own per-step lightness and chroma curve, so they sit in the family. Leading with blue, orange and teal keeps red, green and yellow (which read as status) out of the first slots, and makes it the stronger palette overall.</p>
+    </div>
+    <div class="swatches cvd-target" id="specSw"></div>
+    <div class="stats"><span class="pill">Worst adjacent CVD ΔE 15.7 (target ≥ 8)</span><span class="pill">Normal-vision ΔE 19.1 (floor 15)</span><span class="pill">All ≥ 3:1 on white and on grey/1000</span><span class="pill">Slots 1–3 validated all-pairs (ΔE 16.2) for scatter/maps</span></div>
+    <div class="chart cvd-target">
+      <h3>Tickets created by channel</h3>
+      <div class="legend" id="barLegend"></div>
+      <div id="barChart"></div>
+      <span class="sample">Sample data · thousands of tickets per week</span>
+    </div>
+  </section>
+
+  <!-- SEQUENTIAL + DIVERGING -->
+  <section class="block">
+    <div class="grid2">
+      <div class="chart cvd-target">
+        <div class="head"><span class="eyebrow">Sequential</span><h2>Blue ramp for magnitude</h2>
+        <p class="muted small">One hue, light to dark. Step 600 is skipped: it sits too close to 500. In dark mode the ramp flips, so low values recede into the surface.</p></div>
+        <div class="ramp" id="seqRamp"></div>
+        <div class="rampnote"><span>Low</span><span>High</span></div>
+        <h3>Ticket volume by hour</h3>
+        <div id="heat"></div>
+        <span class="sample">Sample data · tickets created, UTC</span>
+      </div>
+      <div class="chart cvd-target">
+        <div class="head"><span class="eyebrow">Diverging</span><h2>Orange ↔ blue around grey</h2>
+        <p class="muted small">Warm/cool poles with a neutral grey midpoint (grey/200 light, grey/800 dark). Avoids red↔green, which fails for color-blind readers and collides with status.</p></div>
+        <div class="ramp" id="divRamp"></div>
+        <div class="rampnote"><span>Below target</span><span>On target</span><span>Above target</span></div>
+        <h3>CSAT vs. target by team</h3>
+        <div id="divChart"></div>
+        <span class="sample">Sample data · percentage points vs. 90% target</span>
+      </div>
+    </div>
+    <p class="small muted">Ordinal (funnel stages, tiers): light blue/400 · 500 · 700 · 800 · 1000; dark blue/300 · 400 · 500 · 700. Both pass the ordinal check (monotone lightness, ≥ 0.06 step gap, light end ≥ 2:1).</p>
+  </section>
+
+  <!-- STATUS -->
+  <section class="block">
+    <div class="head"><span class="eyebrow">Status · fixed, never themed</span><h2>Good, warning, serious, critical</h2>
+      <p class="muted">Reserved for state. Always shipped with an icon and a label. Warning and serious are below 3:1 on white by design; the icon and label carry the meaning.</p></div>
+    <div class="tablewrap cvd-target"><table>
+      <thead><tr><th>Role</th><th>Token</th><th>Hex</th><th>On white</th><th>On grey/1000</th><th>Example</th></tr></thead>
+      <tbody id="statusRows"></tbody>
+    </table></div>
+    <p class="small muted">Critical is the system's red/700, which is also Spectrum slot 8. In any chart that shows status, cap Spectrum at seven series (fold the rest into "Other" in grey/600) so a series never impersonates an alert.</p>
+  </section>
+
+  <!-- RULES -->
+  <section class="block">
+    <div class="head"><h2>Usage rules</h2></div>
+    <ul class="rules">
+      <li><b>Assign slots in order, never cycle.</b> Series 1 always gets slot 1. A ninth series becomes "Other" (grey/600, <code>#8b8e89</code>) or a small multiple, never a new hue.</li>
+      <li><b>Color follows the entity, not its rank.</b> If a filter removes a series, the survivors keep their colors.</li>
+      <li><b>Scatter, bubble, maps, small multiples:</b> any two marks can touch, so use only the three all-pairs-safe slots.</li>
+      <li><b>Two or more series always get a legend;</b> four or fewer also get direct labels. Text stays in grey ink, never in the series color.</li>
+      <li><b>Separate fills with a 2px surface gap</b> (stacked segments, adjacent bars). Lines are 2px; markers ≥ 8px.</li>
+      <li><b>Use chart chrome from grey:</b> gridlines grey/200 (dark grey/900), baseline grey/300 (dark grey/800), axis labels grey/600.</li>
+    </ul>
+  </section>
+
+  <!-- TOKENS -->
+  <section class="block">
+    <div class="head"><h2>Tokens</h2><p class="muted">Proposed names under a <code>dataviz</code> namespace. The three inspired ramps are included in full (100–1200) so they can be added to the Figma file alongside the existing ramps.</p></div>
+    <div class="codehead"><h3>CSS custom properties</h3><button type="button" class="copy" data-target="cssOut">Copy CSS</button></div>
+    <pre id="cssOut"></pre>
+    <div class="codehead"><h3>New ramps (JSON)</h3><button type="button" class="copy" data-target="jsonOut">Copy JSON</button></div>
+    <pre id="jsonOut"></pre>
+  </section>
+</div>
+<div id="tip" hidden></div>
+
+<script>
+(function(){
+const CORE=[
+ {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Yellow",t:"yellow/700",h:"#7f7004"},
+ {n:"Red",t:"red/600",h:"#d46f74"},{n:"Green",t:"green/700",h:"#4b7d04"}];
+const SPEC=[
+ {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Orange",t:"orange/700",h:"#b15204",nw:1},{n:"Teal",t:"teal/600",h:"#01a2a3",nw:1},
+ {n:"Yellow",t:"yellow/700",h:"#7f7004"},{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1},{n:"Green",t:"green/700",h:"#4b7d04"},
+ {n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Red",t:"red/700",h:"#c63f46"}];
+const NEW={
+ orange:["#fff3ec","#fee3d5","#ffd2ba","#e8a681","#d68455","#ca7541","#b15204","#69320c","#522709","#361907","#210f05","#150904"],
+ teal:["#e8f9f9","#ccf2f2","#adebea","#67cac9","#07b1b2","#01a2a3","#018282","#034e4e","#033d3d","#012828","#001818","#001010"],
+ magenta:["#fef1f7","#fee0ed","#fecde3","#e59fbf","#d27ba6","#c66c99","#b1427e","#662c4a","#50223a","#351626","#200d16","#15080e"]};
+const BLUE={100:"#f3f6fb",200:"#e4eaf6",300:"#d4ddf0",400:"#a3b7df",500:"#7f9bd3",600:"#698cd3",700:"#406cc4",800:"#284173",900:"#1f335a",1000:"#14213b"};
+const ORANGE={300:NEW.orange[2],400:NEW.orange[3],500:NEW.orange[4],700:NEW.orange[6],800:NEW.orange[7]};
+const SEQ_L=[100,200,300,400,500,700,800,900,1000].map(s=>BLUE[s]);
+const SEQ_D=[1000,900,800,700,500,400,300,200].map(s=>BLUE[s]);
+const DIV_L=[ORANGE[800],ORANGE[700],ORANGE[500],ORANGE[300],"#eae9e8",BLUE[300],BLUE[500],BLUE[700],BLUE[800]];
+const DIV_D=[ORANGE[300],ORANGE[400],ORANGE[500],ORANGE[700],"#404241",BLUE[700],BLUE[500],BLUE[400],BLUE[300]];
+const STATUS=[
+ {r:"Good",t:"green/500",h:"#6dab2c",ex:"SLA met",icon:"check"},
+ {r:"Warning",t:"yellow/400",h:"#ccb748",ex:"SLA at risk",icon:"warn"},
+ {r:"Serious",t:"orange/500",h:"#d68455",ex:"SLA breached < 1h",icon:"warn"},
+ {r:"Critical",t:"red/700",h:"#c63f46",ex:"SLA breached > 1h",icon:"x"}];
+const OTHER="#8b8e89";
+
+const lum=h=>{const c=[1,3,5].map(i=>parseInt(h.slice(i,i+2),16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return .2126*c[0]+.7152*c[1]+.0722*c[2]};
+const cr=(a,b)=>{const x=lum(a),y=lum(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05)};
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const $=id=>document.getElementById(id);
+const isDark=()=>{const t=document.documentElement.getAttribute("data-theme");return t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches};
+
+function swatches(el,pal){
+  el.innerHTML=pal.map((c,i)=>`<div class="sw"><div class="chip" style="background:${c.h}"><span class="slot">${i+1}</span></div>
+  <span class="nm">${c.n}${c.nw?'<span class="new">new</span>':''}</span>
+  <span class="meta">${c.t}<br>${c.h}<br>${cr(c.h,"#ffffff").toFixed(2)}:1 · ${cr(c.h,"#202121").toFixed(2)}:1 dk</span></div>`).join("");
+}
+function legend(el,items){el.innerHTML=items.map(c=>`<span><i style="background:${c.h}"></i>${esc(c.n)}</span>`).join("")}
+function ramp(el,cols,labels){el.innerHTML=cols.map((c,i)=>`<div style="background:${c}">${labels?`<small style="color:${lum(c)>.3?'#2f3130':'#f7f7f7'}">${labels[i]}</small>`:''}</div>`).join("")}
+
+// tooltip
+const tip=$("tip");
+function showTip(e,html){tip.innerHTML=html;tip.hidden=false;moveTip(e)}
+function moveTip(e){const w=tip.offsetWidth,h=tip.offsetHeight;let x=e.clientX+14,y=e.clientY+14;if(x+w>innerWidth-8)x=e.clientX-w-14;if(y+h>innerHeight-8)y=e.clientY-h-14;tip.style.left=x+"px";tip.style.top=y+"px"}
+function hideTip(){tip.hidden=true}
+function bindTips(root){root.querySelectorAll("[data-tip]").forEach(n=>{
+  n.addEventListener("pointerenter",e=>showTip(e,n.getAttribute("data-tip")));
+  n.addEventListener("pointermove",moveTip);n.addEventListener("pointerleave",hideTip)})}
+
+// sample data (deterministic)
+let seed=7;const rnd=()=>(seed=(seed*16807)%2147483647)/2147483647;
+const weeks=["W1","W2","W3","W4","W5","W6","W7","W8","W9","W10","W11","W12"];
+const teams=["Billing","Tech support","Onboarding","Returns","Enterprise"];
+const base=[3.2,6.1,2.1,4.4,1.3];
+const lineData=teams.map((t,i)=>weeks.map((w,j)=>+(base[i]+Math.sin(j/2+i)*0.6-(i===1?j*0.18:0)+rnd()*0.4).toFixed(1)));
+const channels=["Email","Messaging","Voice","Web form","WhatsApp","Social","API","Help center"];
+const bw=["Jul 7","Jul 14","Jul 21","Jul 28","Aug 4","Aug 11"];
+const barBase=[9,7,4.5,3.8,2.6,1.8,1.4,0.9];
+const barData=bw.map((w,j)=>channels.map((c,i)=>+(barBase[i]*(1+(i===1?j*0.07:0))*(0.9+rnd()*0.2)).toFixed(1)));
+const days=["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
+const heatData=days.map((d,i)=>Array.from({length:24},(_,h)=>{const work=Math.exp(-((h-13)**2)/28);const wk=i>4?.35:1;return Math.round((40+620*work*wk)*(0.85+rnd()*0.3))}));
+const months=["Mar","Apr","May","Jun","Jul","Aug"];
+const divTeams=["Billing","Tech support","Onboarding","Returns","Enterprise","Payments"];
+const divData=divTeams.map((t,i)=>months.map((m,j)=>Math.round((Math.sin(i*1.7+j*0.9)*6+(i===4?3:0)+(rnd()-.5)*3))));
+
+function lineChart(){
+  const W=720,H=280,m={l:36,r:92,t:10,b:28},iw=W-m.l-m.r,ih=H-m.t-m.b,max=8;
+  const x=j=>m.l+j*iw/(weeks.length-1),y=v=>m.t+ih-(v/max)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Line chart, median first reply time by team"><g class="grid">`;
+  for(let v=0;v<=max;v+=2)s+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${y(v)}" y2="${y(v)}"/>`;
+  s+=`</g><g class="axis">`;for(let v=0;v<=max;v+=2)s+=`<text x="${m.l-8}" y="${y(v)+4}" text-anchor="end">${v}h</text>`;
+  weeks.forEach((w,j)=>{if(j%2===0||j===weeks.length-1)s+=`<text x="${x(j)}" y="${H-8}" text-anchor="middle">${w}</text>`});s+=`</g>`;
+  s+=`<line class="base" x1="${m.l}" x2="${m.l+iw}" y1="${y(0)}" y2="${y(0)}"/>`;
+  const ends=lineData.map((d,i)=>({i,y:y(d.at(-1))})).sort((a,b)=>a.y-b.y);for(let k=1;k<ends.length;k++)if(ends[k].y-ends[k-1].y<14)ends[k].y=ends[k-1].y+14;
+  lineData.forEach((d,i)=>{s+=`<path d="${d.map((v,j)=>(j?"L":"M")+x(j).toFixed(1)+" "+y(v).toFixed(1)).join("")}" fill="none" stroke="${CORE[i].h}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+    s+=`<circle cx="${x(d.length-1)}" cy="${y(d.at(-1))}" r="4" fill="${CORE[i].h}" stroke="var(--surface)" stroke-width="2"/>`});
+  ends.forEach(e=>{s+=`<text class="dlabel" x="${m.l+iw+10}" y="${e.y+4}">${teams[e.i]} ${lineData[e.i].at(-1)}h</text>`});
+  weeks.forEach((w,j)=>{const rows=lineData.map((d,i)=>({i,v:d[j]})).sort((a,b)=>b.v-a.v).map(r=>`<span class="k" style="background:${CORE[r.i].h}"></span>${teams[r.i]} <b>${r.v}h</b>`).join("<br>");
+    s+=`<rect x="${x(j)-iw/(weeks.length-1)/2}" y="${m.t}" width="${iw/(weeks.length-1)}" height="${ih}" fill="transparent" data-tip="${esc(`<b>${w}</b><br>${rows}`)}"/>`});
+  s+=`</svg>`;$("lineChart").innerHTML=s;legend($("lineLegend"),CORE.map((c,i)=>({n:teams[i],h:c.h})));bindTips($("lineChart"));
+}
+function barChart(){
+  const W=720,H=300,m={l:40,r:8,t:10,b:28},iw=W-m.l-m.r,ih=H-m.t-m.b,max=40;
+  const band=iw/bw.length,bwid=Math.min(64,band*0.56),y=v=>m.t+ih-(v/max)*ih;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Stacked bar chart, tickets by channel per week"><g class="grid">`;
+  for(let v=0;v<=max;v+=10)s+=`<line x1="${m.l}" x2="${m.l+iw}" y1="${y(v)}" y2="${y(v)}"/>`;
+  s+=`</g><g class="axis">`;for(let v=0;v<=max;v+=10)s+=`<text x="${m.l-8}" y="${y(v)+4}" text-anchor="end">${v}k</text>`;
+  bw.forEach((w,j)=>s+=`<text x="${m.l+band*j+band/2}" y="${H-8}" text-anchor="middle">${w}</text>`);s+=`</g>`;
+  bw.forEach((w,j)=>{let acc=0;const cx=m.l+band*j+band/2-bwid/2;const tot=barData[j].reduce((a,b)=>a+b,0);
+    barData[j].forEach((v,i)=>{const y0=y(acc),y1=y(acc+v);acc+=v;const top=i===channels.length-1;const hgt=Math.max(0,y0-y1-2);
+      const r=top?4:0;const d=`M${cx} ${y0-2}V${y1+r}${r?`Q${cx} ${y1} ${cx+r} ${y1}`:""}H${cx+bwid-r}${r?`Q${cx+bwid} ${y1} ${cx+bwid} ${y1+r}`:""}V${y0-2}Z`;
+      s+=`<path d="${hgt>0?d:""}" fill="${SPEC[i].h}" data-tip="${esc(`<b>${w}</b><br><span class='k' style='background:${SPEC[i].h}'></span>${channels[i]} <b>${v}k</b> · ${Math.round(v/tot*100)}%<br><span style='opacity:.7'>Total ${tot.toFixed(1)}k</span>`)}"/>`});
+    s+=`<text class="dlabel" x="${cx+bwid/2}" y="${y(tot)-6}" text-anchor="middle">${tot.toFixed(0)}k</text>`});
+  s+=`<line class="base" x1="${m.l}" x2="${m.l+iw}" y1="${y(0)}" y2="${y(0)}"/></svg>`;
+  $("barChart").innerHTML=s;legend($("barLegend"),SPEC.map((c,i)=>({n:channels[i],h:c.h})));bindTips($("barChart"));
+}
+function heat(){
+  const seq=isDark()?SEQ_D:SEQ_L,max=700;const W=560,H=200,m={l:34,r:4,t:4,b:22},cw=(W-m.l-m.r)/24,ch=(H-m.t-m.b)/7;
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Heatmap, tickets by weekday and hour">`;
+  heatData.forEach((row,i)=>{s+=`<text class="lbl" x="${m.l-6}" y="${m.t+ch*i+ch/2+4}" text-anchor="end">${days[i]}</text>`;
+    row.forEach((v,h)=>{const k=Math.min(seq.length-1,Math.floor(v/max*seq.length));
+      s+=`<rect x="${m.l+h*cw+1}" y="${m.t+i*ch+1}" width="${cw-2}" height="${ch-2}" rx="2" fill="${seq[k]}" data-tip="${esc(`<b>${days[i]} ${String(h).padStart(2,"0")}:00</b><br>${v} tickets`)}"/>`})});
+  [0,6,12,18,23].forEach(h=>s+=`<text class="lbl" x="${m.l+h*cw+cw/2}" y="${H-6}" text-anchor="middle">${String(h).padStart(2,"0")}</text>`);
+  s+=`</svg>`;$("heat").innerHTML=s;bindTips($("heat"));
+  const lab=isDark()?[1000,900,800,700,500,400,300,200]:[100,200,300,400,500,700,800,900,1000];ramp($("seqRamp"),seq,lab);
+}
+function div(){
+  const pal=isDark()?DIV_D:DIV_L;const W=560,H=210,m={l:84,r:4,t:4,b:22},cw=(W-m.l-m.r)/months.length,ch=(H-m.t-m.b)/divTeams.length;
+  const bin=v=>{const b=[-7,-5,-3,-1,1,3,5,7];let k=0;while(k<b.length&&v>=b[k])k++;return k};
+  let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Diverging heatmap, CSAT versus target by team and month">`;
+  divData.forEach((row,i)=>{s+=`<text class="lbl" x="${m.l-8}" y="${m.t+ch*i+ch/2+4}" text-anchor="end">${divTeams[i]}</text>`;
+    row.forEach((v,j)=>{const c=pal[bin(v)];const x=m.l+j*cw+1,y=m.t+i*ch+1;
+      s+=`<rect x="${x}" y="${y}" width="${cw-2}" height="${ch-2}" rx="4" fill="${c}" data-tip="${esc(`<b>${divTeams[i]} · ${months[j]}</b><br>CSAT ${90+v}% (${v>0?"+":""}${v} pts)`)}"/>`;
+      s+=`<text x="${x+(cw-2)/2}" y="${y+(ch-2)/2+4}" text-anchor="middle" style="font-size:11px;font-family:var(--font);pointer-events:none" fill="${lum(c)>.28?'#2f3130':'#f7f7f7'}">${v>0?"+":""}${v}</text>`})});
+  months.forEach((mo,j)=>s+=`<text class="lbl" x="${m.l+j*cw+cw/2}" y="${H-6}" text-anchor="middle">${mo}</text>`);
+  s+=`</svg>`;$("divChart").innerHTML=s;bindTips($("divChart"));ramp($("divRamp"),pal);
+}
+function status(){
+  const ic={check:'<path d="M3.5 8.5l3 3 6-7" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>',
+    warn:'<path d="M8 2.5l6 11H2z" fill="currentColor"/><path d="M8 6.5v3.5" stroke="var(--surface)" stroke-width="1.6" stroke-linecap="round"/><circle cx="8" cy="12" r=".9" fill="var(--surface)"/>',
+    x:'<circle cx="8" cy="8" r="6.5" fill="currentColor"/><path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="var(--surface)" stroke-width="1.6" stroke-linecap="round"/>'};
+  $("statusRows").innerHTML=STATUS.map(s=>`<tr><td><span class="status" style="color:${s.h}"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true">${ic[s.icon]}</svg><span style="color:var(--ink)">${s.r}</span></span></td>
+   <td><code>${s.t}</code></td><td><code>${s.h}</code></td><td class="num">${cr(s.h,"#ffffff").toFixed(2)}:1</td><td class="num">${cr(s.h,"#202121").toFixed(2)}:1</td><td class="muted">${s.ex}</td></tr>`).join("");
+}
+function tokens(){
+  const L=[];L.push(":root {","  /* Chart surfaces */","  --dataviz-surface: #ffffff;           /* dark: #202121 grey/1000 */","  --dataviz-grid: #eae9e8;              /* grey/200 · dark: #2f3130 grey/900 */","  --dataviz-baseline: #dcdcda;          /* grey/300 · dark: #404241 grey/800 */","  --dataviz-label: #8b8e89;             /* grey/600 */","  --dataviz-other: #8b8e89;             /* grey/600 */","");
+  L.push("  /* Categorical · Spectrum (default, 8) — same in light and dark */");SPEC.forEach((c,i)=>L.push(`  --dataviz-cat-${i+1}: ${c.h};`.padEnd(38)+`/* ${c.t} */`));
+  L.push("","  /* Categorical · Core (system-only, 5) */");CORE.forEach((c,i)=>L.push(`  --dataviz-core-${i+1}: ${c.h};`.padEnd(38)+`/* ${c.t} */`));
+  L.push("","  /* Sequential · blue (light) */");[100,200,300,400,500,700,800,900,1000].forEach((st,i)=>L.push(`  --dataviz-seq-${i+1}: ${BLUE[st]};`.padEnd(38)+`/* blue/${st} */`));
+  L.push("","  /* Diverging · orange ↔ grey ↔ blue (light) */");DIV_L.forEach((c,i)=>L.push(`  --dataviz-div-${i-4<0?"n"+(4-i):i===4?"mid":"p"+(i-4)}: ${c};`));
+  L.push("","  /* Status (fixed) */");STATUS.forEach(s=>L.push(`  --dataviz-status-${s.r.toLowerCase()}: ${s.h};`.padEnd(38)+`/* ${s.t} */`));
+  L.push("}","","/* Dark overrides (seq flips; diverging arms re-stepped) */",":root[data-theme=\"dark\"] {","  --dataviz-surface: #202121; --dataviz-grid: #2f3130; --dataviz-baseline: #404241;");
+  SEQ_D.forEach((c,i)=>L.push(`  --dataviz-seq-${i+1}: ${c};`));L.push("  --dataviz-seq-9: unset;");
+  DIV_D.forEach((c,i)=>L.push(`  --dataviz-div-${i-4<0?"n"+(4-i):i===4?"mid":"p"+(i-4)}: ${c};`));L.push("}");
+  $("cssOut").textContent=L.join("\n");
+  const steps=[100,200,300,400,500,600,700,800,900,1000,1100,1200];
+  const o={};for(const k in NEW){o[k]={};NEW[k].forEach((h,i)=>o[k][steps[i]]=h)}
+  $("jsonOut").textContent=JSON.stringify(o,null,2);
+}
+document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{const el=$(b.dataset.target);const t=el.textContent;
+  const done=()=>{b.textContent="Copied";setTimeout(()=>b.textContent=b.dataset.target==="cssOut"?"Copy CSS":"Copy JSON",1500)};
+  const sel=()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent="Selected — press ⌘C"};
+  try{navigator.clipboard.writeText(t).then(done,sel)}catch(e){sel()}}));
+
+function seg(id,fn){const g=$(id);g.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b));fn(b.dataset.v)})}
+seg("themeSeg",v=>{if(v==="system")document.documentElement.removeAttribute("data-theme");else document.documentElement.setAttribute("data-theme",v);themed()});
+seg("cvdSeg",v=>document.querySelectorAll(".cvd-target").forEach(n=>n.style.filter=v==="none"?"":`url(#${v})`));
+matchMedia("(prefers-color-scheme: dark)").addEventListener("change",themed);
+new MutationObserver(themed).observe(document.documentElement,{attributes:true,attributeFilter:["data-theme"]});
+let last=null;function themed(){const d=isDark();if(d===last)return;last=d;heat();div()}
+
+swatches($("coreSw"),CORE);swatches($("specSw"),SPEC);lineChart();barChart();status();tokens();themed();
+})();
+</script>
+</body>
+</html>
