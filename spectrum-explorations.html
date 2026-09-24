@@ -126,7 +126,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
     <a class="small" href="index.html" style="color:var(--accent)">← Our chart palettes</a>
     <span class="eyebrow">Data viz · Color guidelines · Exploration</span>
     <h1>Spectrum alternatives without red or green</h1>
-    <p class="lede">A copy of the chart palettes page that explores replacements for Spectrum using no red or green, so series colors never read as good/bad and never collide with status colors. Flora leaves three hues once red and green are gone (blue, purple and yellow), so the options repeat hues at different steps and, in two cases, add the orange and magenta ramps. Every option is validated in light and dark with the same checks as before.</p>
+    <p class="lede">A copy of the chart palettes page that explores replacements for Spectrum using no red or green, so series colors never read as good/bad and never collide with status colors. Flora leaves three hues once red and green are gone (blue, purple and yellow), so every option adds the orange ramp, some with magenta too, and repeats hues at different steps. (Flora's hues alone top out at six colors.) Every option is validated in light and dark with the same checks as before.</p>
   </header>
 
   <div class="controls" role="group" aria-label="Preview options">
@@ -259,10 +259,6 @@ const VARIANTS={
    desc:"Flora + orange's hues with magenta/600 in place of the second purple. Five different hues lead, so the first five series are all clearly distinct. Separation drops from Flora + orange's 20.8 to 15.6, still about double the target and on par with the original Spectrum. This is now the Spectrum palette on the main page.",
    pal:["b6","y6","p6","o7","m6","y7","b7","o6"],trio:["b7","o7","m6"],
    stats:[["Worst neighbouring color-blind ΔE 15.6 (target ≥ 8)",1],["Typical-vision ΔE 16.7 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: blue/700 · orange/700 · magenta/600 (ΔE 10.2)",0]]},
- A:{label:"Flora only",title:"Flora only: blue, yellow and purple, two steps each",
-   desc:"Uses only existing Flora tokens. Each hue appears twice, at 600 and then 700, so the palette tops out at six colors. The second half repeats the first half's hues one step darker, which reads as related series. Yellow/700 leans olive.",
-   pal:["b6","y6","p6","b7","y7","p7"],trio:["b7","p6","y6"],
-   stats:[["Worst neighbouring color-blind ΔE 9.0 (target ≥ 8)",1],["Typical-vision ΔE 15.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Max 6 series: no 7th color passes",0],["Scatter/maps: blue/700 · purple/600 · yellow/600",0]]},
  B:{label:"Flora + orange",title:"Flora + orange: Flora plus the orange ramp",
    desc:"Adds the orange ramp, a warm hue between red and yellow that isn't either. It's the strongest palette tested: every neighbouring pair is further apart than in the original Spectrum. The first four slots are four different hues, then each repeats one step off. Uses yellow/700 (olive) in slot 6.",
    pal:["b6","y6","p7","o6","b7","y7","p6","o7"],trio:["b7","o6","p6"],
@@ -280,7 +276,7 @@ const CURRENT=[
  {n:"Yellow",t:"yellow/700",h:"#7f7004"},{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1},{n:"Green",t:"green/700",h:"#4b7d04"},
  {n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Red",t:"red/700",h:"#c63f46"}];
 VARIANTS.cur.pal=CURRENT;VARIANTS.cur.trio=CURRENT.slice(0,3);
-for(const k of ["BM","A","B","C"]){VARIANTS[k].pal=VARIANTS[k].pal.map(x=>C_[x]);VARIANTS[k].trio=VARIANTS[k].trio.map(x=>C_[x])}
+for(const k of ["BM","B","C"]){VARIANTS[k].pal=VARIANTS[k].pal.map(x=>C_[x]);VARIANTS[k].trio=VARIANTS[k].trio.map(x=>C_[x])}
 let SPEC=VARIANTS.BM.pal;
 const NEW={
  orange:["#fff3ec","#fee3d5","#ffd2ba","#e8a681","#d68455","#ca7541","#b15204","#69320c","#522709","#361907","#210f05","#150904"],
@@ -483,7 +479,7 @@ function setVariant(k){curVar=k;const V=VARIANTS[k];SPEC=V.pal;
   swatches($("specSw"),SPEC);
   Object.assign(CHARTS.spec,{pal:SPEC,trio:V.trio,series:channels.slice(0,SPEC.length),data:barData.map(r=>r.slice(0,SPEC.length))});
   hideTip();catChart("spec");tokens();}
-$("varSeg").innerHTML=["cur","BM","A","B","C"].map(k=>[k,VARIANTS[k]]).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="false">${v.label}</button>`).join("");
+$("varSeg").innerHTML=["cur","BM","B","C"].map(k=>[k,VARIANTS[k]]).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="false">${v.label}</button>`).join("");
 $("varSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setVariant(b.dataset.v)});
 swatches($("coreSw"),CORE);initChart("core");initChart("spec");setVariant("BM");status();themed();
 })();
