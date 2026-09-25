@@ -11,14 +11,26 @@
 // Scatter/map subsets are checked over all pairs instead of neighbours.
 
 const PALETTES = {
-  "Flora + orange + magenta (Spectrum)": ["#406cc4", "#a08d0e", "#a47ebf", "#b15204", "#c66c99", "#7f7004", "#698cd3", "#ca7541"],
-  "Flora + orange + teal + magenta": ["#406cc4", "#01a2a3", "#b15204", "#a47ebf", "#a08d0e", "#698cd3", "#7f7004", "#c66c99"],
-  "Flora + orange": ["#406cc4", "#a08d0e", "#8d59b1", "#ca7541", "#698cd3", "#7f7004", "#a47ebf", "#b15204"],
-  "Flora + magenta + orange": ["#406cc4", "#b1427e", "#a08d0e", "#a47ebf", "#ca7541", "#698cd3", "#b15204", "#8d59b1"],
-  "Flora + orange + magenta scatter set": { all: true, colors: ["#406cc4", "#b15204", "#c66c99"] },
-  "Flora + orange + teal + magenta scatter set": { all: true, colors: ["#406cc4", "#01a2a3", "#b15204"] },
-  "Flora + orange scatter set": { all: true, colors: ["#406cc4", "#ca7541", "#a47ebf"] },
-  "Flora + magenta + orange scatter set": { all: true, colors: ["#406cc4", "#b1427e", "#a08d0e"] },
+  "Palette A": ["#4694cc",  "#d17459",  "#ac4c90",  "#859601",  "#8c82db",  "#419e6d",  "#916816",  "#ce7092"],
+  "Palette B": ["#4694cc",  "#859601",  "#ce7092",  "#916816",  "#ac4c90",  "#d17459",  "#8c82db",  "#419e6d"],
+  "Palette C": ["#4694cc",  "#ac4c90",  "#d17459",  "#8c82db",  "#859601",  "#ce7092",  "#916816",  "#419e6d"],
+  "Palette D": ["#4694cc",  "#ce7092",  "#859601",  "#ac4c90",  "#d17459",  "#8c82db",  "#419e6d",  "#916816"],
+  "Palette E": ["#4694cc",  "#419e6d",  "#8c82db",  "#d17459",  "#ac4c90",  "#859601",  "#ce7092",  "#916816"],
+  "Palette F": ["#4694cc",  "#d17459",  "#8c82db",  "#419e6d",  "#916816",  "#ac4c90",  "#859601",  "#ce7092"],
+  "Palette G": ["#4694cc",  "#859601",  "#ac4c90",  "#d17459",  "#8c82db",  "#419e6d",  "#916816",  "#ce7092"],
+  "Palette H": ["#4694cc",  "#859601",  "#8c82db",  "#d17459",  "#ac4c90",  "#419e6d",  "#916816",  "#ce7092"],
+  "Palette I": ["#4694cc",  "#ac4c90",  "#859601",  "#ce7092",  "#916816",  "#419e6d",  "#8c82db",  "#d17459"],
+  "Palette J": ["#4694cc",  "#ac4c90",  "#419e6d",  "#916816",  "#ce7092",  "#859601",  "#8c82db",  "#d17459"],
+  "Palette K": ["#4694cc",  "#ce7092",  "#916816",  "#419e6d",  "#ac4c90",  "#d17459",  "#8c82db",  "#859601"],
+  "Scatter set: azure/600 · crimson/600 · fuchsia/700": { all: true, colors: ["#4694cc",  "#d17459",  "#ac4c90"] },
+  "Scatter set: azure/600 · lime/600 · pink/600": { all: true, colors: ["#4694cc",  "#859601",  "#ce7092"] },
+  "Scatter set: azure/600 · fuchsia/700 · crimson/600": { all: true, colors: ["#4694cc",  "#ac4c90",  "#d17459"] },
+  "Scatter set: azure/600 · pink/600 · lime/600": { all: true, colors: ["#4694cc",  "#ce7092",  "#859601"] },
+  "Scatter set: azure/600 · mint/600 · lemon/700": { all: true, colors: ["#4694cc",  "#419e6d",  "#916816"] },
+  "Scatter set: azure/600 · lime/600 · fuchsia/700": { all: true, colors: ["#4694cc",  "#859601",  "#ac4c90"] },
+  "Scatter set: azure/600 · fuchsia/700 · lime/600": { all: true, colors: ["#4694cc",  "#ac4c90",  "#859601"] },
+  "Scatter set: azure/600 · fuchsia/700 · mint/600": { all: true, colors: ["#4694cc",  "#ac4c90",  "#419e6d"] },
+  "Scatter set: azure/600 · pink/600 · lemon/700": { all: true, colors: ["#4694cc",  "#ce7092",  "#916816"] },
 };
 const MODES = { light: { surface: "#ffffff", band: [0.43, 0.77] }, dark: { surface: "#202121", band: [0.48, 0.67] } };
 

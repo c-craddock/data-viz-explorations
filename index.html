@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Data viz color palettes (no red or green)</title>
+<title>Data viz colour palettes (Flora secondary colors)</title>
 <style>
 :root{
   --page:#f7f7f7; --surface:#ffffff; --ink:#2f3130; --ink-2:#646864; --ink-3:#8b8e89;
@@ -27,9 +27,16 @@
   --code:#19191a; --pill-pass:#25390f; --pill-pass-ink:#c6e8a1; --mid:#404241; --status-bg:#262203; --status-ink:#eedf7a; --status-dot:#ccb748;}
 
 *{box-sizing:border-box}
+.pagetabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding-top:20px;flex-wrap:wrap}
+.pagetabs a,.pagetabs span{font-size:14px;line-height:20px;padding:10px 14px;margin-bottom:-1px;border-bottom:2px solid transparent;color:var(--ink-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.pagetabs span[aria-current]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.pagetabs a:hover{color:var(--ink);border-bottom-color:var(--line)}
+.pagetabs a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.pagetabs small{font-size:11px;opacity:.7}
+
 body{margin:0;background:var(--page);color:var(--ink);font:14px/20px var(--font);letter-spacing:-.15px;padding-inline:16px;padding-block:0 64px}
 .wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-header.top{padding-block:40px 8px;display:flex;flex-direction:column;gap:10px}
+header.top{padding-block:24px 8px;display:flex;flex-direction:column;gap:10px}
 .eyebrow{font-size:12px;line-height:16px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
 .titlerow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
 .status-pill{display:inline-flex;align-items:center;gap:6px;font-size:12px;line-height:16px;font-weight:600;padding:4px 10px;border-radius:999px;background:var(--status-bg);color:var(--status-ink);white-space:nowrap}
@@ -126,11 +133,11 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
 </svg>
 
 <div class="wrap">
+  <nav class="pagetabs" aria-label="Data viz pages"><span aria-current="page">Data viz color palettes</span><a href="bi-palettes.html">BI tool palette comparisons</a></nav>
   <header class="top">
     <span class="eyebrow">Data viz · Color guidelines · Exploration</span>
-    <div class="titlerow"><h1>Data viz colour palettes (no red or green)</h1><span class="status-pill" role="status"><i aria-hidden="true"></i>In progress</span></div>
-    <p class="lede">Colour palette explorations for data viz using no red or green, so series colors never read as good/bad and never collide with status colors. Flora leaves three hues once red and green are gone (blue, purple and yellow), so every option adds the orange ramp, some with magenta too, and repeats hues at different steps. (Flora's hues alone top out at six colors.) Every option is validated in light and dark with the same checks as before.</p>
-    <a class="small" href="bi-palettes.html" style="color:var(--accent)">Compare with popular BI tools →</a>
+    <div class="titlerow"><h1>Data viz colour palettes (Flora secondary colors)</h1><span class="status-pill" role="status"><i aria-hidden="true"></i>In progress</span></div>
+    <p class="lede">Colour palette explorations for data viz built from Flora's secondary colors: pink, crimson, orange, lemon, lime, mint, azure, royal and fuchsia. Teal and kale are left out because every step from 500 to 700 is too greyish to work as a chart color. Every option uses existing Flora tokens only, includes crimson, lime and mint, and is validated in light and dark: lightness, chroma, color-blind and typical-vision separation, and 3:1 contrast on the chart surface.</p>
   </header>
 
   <div class="controls" role="group" aria-label="Preview options">
@@ -143,7 +150,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
   <!-- SPECTRUM -->
   <section class="block" id="spectrum">
     <div class="head">
-      <span class="eyebrow">Categorical - palette options (no red or green)</span>
+      <span class="eyebrow">Categorical - palette options (Flora secondary colors)</span>
       <h2 id="varTitle"></h2>
       <p class="muted" id="varDesc"></p>
     </div>
@@ -162,8 +169,8 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
   <section class="block">
     <div class="grid2">
       <div class="chart cvd-target">
-        <div class="head"><span class="eyebrow">Sequential</span><h2>Blue ramp for magnitude</h2>
-        <p class="muted small">One hue, light to dark. Step 600 is skipped: it sits too close to 500. In dark mode the ramp flips, so low values recede into the surface.</p></div>
+        <div class="head"><span class="eyebrow">Sequential</span><h2>Azure ramp for magnitude</h2>
+        <p class="muted small">Flora secondary azure, light to dark. Step 600 is skipped: it sits too close to 500. In dark mode the ramp flips, so low values recede into the surface.</p></div>
         <div class="ramp" id="seqRamp"></div>
         <div class="rampnote"><span>Low</span><span>High</span></div>
         <h3>Ticket volume by hour</h3>
@@ -171,8 +178,8 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
         <span class="sample">Sample data · tickets created, UTC</span>
       </div>
       <div class="chart cvd-target">
-        <div class="head"><span class="eyebrow">Diverging</span><h2>Orange ↔ blue around grey</h2>
-        <p class="muted small">Warm/cool poles with a neutral grey midpoint (grey/200 light, grey/800 dark). Avoids red↔green, which fails for color-blind readers and collides with status.</p></div>
+        <div class="head"><span class="eyebrow">Diverging</span><h2>Crimson ↔ azure around grey</h2>
+        <p class="muted small">Flora secondary crimson and azure as warm/cool poles, with a neutral grey midpoint (grey/200 light, grey/800 dark). The two ramps have matching lightness at each step, so both arms read with equal weight. Avoids red↔green, which fails for color-blind readers and collides with status.</p></div>
         <div class="ramp" id="divRamp"></div>
         <div class="rampnote"><span>Below target</span><span>On target</span><span>Above target</span></div>
         <h3>CSAT vs. target by team</h3>
@@ -180,7 +187,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
         <span class="sample">Sample data · percentage points vs. 90% target</span>
       </div>
     </div>
-    <p class="small muted">Ordinal (funnel stages, tiers): light blue/400 · 500 · 700 · 800 · 1000; dark blue/300 · 400 · 500 · 700. Both pass the ordinal check (monotone lightness, ≥ 0.06 step gap, light end ≥ 2:1).</p>
+    <p class="small muted">Ordinal (funnel stages, tiers): light azure/400 · 500 · 700 · 800 · 1000; dark azure/300 · 400 · 500 · 700. Both pass the ordinal check (monotone lightness, ≥ 0.06 step gap, light end ≥ 2:1).</p>
   </section>
 
   <!-- STATUS -->
@@ -191,7 +198,7 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
       <thead><tr><th>Role</th><th>Token</th><th>Hex</th><th>On white</th><th>On grey/1000</th><th>Example</th></tr></thead>
       <tbody id="statusRows"></tbody>
     </table></div>
-    <p class="small muted">None of these palette options use red or green, so a series can never be mistaken for a critical or success status. Warning (yellow) and serious (orange) share hue families with some series, so the icon and label carry the meaning.</p>
+    <p class="small muted">Every option includes crimson, which reads as a soft red, and lime and mint, which read as greens. In charts that also show status, the status icon and label carry the meaning, never color alone.</p>
   </section>
 
   <!-- RULES -->
@@ -209,10 +216,10 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
 
   <!-- TOKENS -->
   <section class="block">
-    <div class="head"><h2>Tokens</h2><p class="muted">Proposed names under a <code>dataviz</code> namespace. The three inspired ramps are included in full (100–1200) so they can be added to the Figma file alongside the existing ramps.</p></div>
+    <div class="head"><h2>Tokens</h2><p class="muted">Proposed names under a <code>dataviz</code> namespace. The JSON lists the Flora secondary steps (500–700) that pass as chart colors.</p></div>
     <div class="codehead"><h3>CSS custom properties</h3><button type="button" class="copy" data-target="cssOut">Copy CSS</button></div>
     <pre id="cssOut"></pre>
-    <div class="codehead"><h3>New ramps (JSON)</h3><button type="button" class="copy" data-target="jsonOut">Copy JSON</button></div>
+    <div class="codehead"><h3>Usable secondary steps (JSON)</h3><button type="button" class="copy" data-target="jsonOut">Copy JSON</button></div>
     <pre id="jsonOut"></pre>
   </section>
 </div>
@@ -223,39 +230,50 @@ pre{margin:0;background:var(--code);border:1px solid var(--line);border-radius:1
 const CORE=[
  {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Yellow",t:"yellow/700",h:"#7f7004"},
  {n:"Red",t:"red/600",h:"#d46f74"},{n:"Green",t:"green/700",h:"#4b7d04"}];
-const C_={b6:{n:"Blue",t:"blue/600",h:"#698cd3"},b7:{n:"Blue",t:"blue/700",h:"#406cc4"},y6:{n:"Yellow",t:"yellow/600",h:"#a08d0e"},y7:{n:"Yellow (olive)",t:"yellow/700",h:"#7f7004"},
- p6:{n:"Purple",t:"purple/600",h:"#a47ebf"},p7:{n:"Purple",t:"purple/700",h:"#8d59b1"},o6:{n:"Orange",t:"orange/600",h:"#ca7541",nw:1},o7:{n:"Orange",t:"orange/700",h:"#b15204",nw:1},
- m7:{n:"Magenta",t:"magenta/700",h:"#b1427e",nw:1},m6:{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1}};
+const C_={"pi5":{n:"Pink",t:"pink/500",h:"#d482a0"},"pi6":{n:"Pink",t:"pink/600",h:"#ce7092"},"pi7":{n:"Pink",t:"pink/700",h:"#b8486e"},"cr5":{n:"Crimson",t:"crimson/500",h:"#d8856d"},"cr6":{n:"Crimson",t:"crimson/600",h:"#d17459"},"cr7":{n:"Crimson",t:"crimson/700",h:"#b55134"},"or5":{n:"Orange",t:"orange/500",h:"#d68846"},"or6":{n:"Orange",t:"orange/600",h:"#ca7a37"},"or7":{n:"Orange",t:"orange/700",h:"#a55d15"},"le5":{n:"Lemon",t:"lemon/500",h:"#c99019"},"le6":{n:"Lemon",t:"lemon/600",h:"#b88415"},"le7":{n:"Lemon",t:"lemon/700",h:"#916816"},"li5":{n:"Lime",t:"lime/500",h:"#92a31f"},"li6":{n:"Lime",t:"lime/600",h:"#859601"},"li7":{n:"Lime",t:"lime/700",h:"#69760b"},"mi5":{n:"Mint",t:"mint/500",h:"#47ac77"},"mi6":{n:"Mint",t:"mint/600",h:"#419e6d"},"mi7":{n:"Mint",t:"mint/700",h:"#337d56"},"te5":{n:"Teal",t:"teal/500",h:"#4aa9a1"},"te6":{n:"Teal",t:"teal/600",h:"#409b94"},"te7":{n:"Teal",t:"teal/700",h:"#2a7b74"},"ka5":{n:"Kale",t:"kale/500",h:"#6aa3ae"},"ka6":{n:"Kale",t:"kale/600",h:"#5b95a2"},"ka7":{n:"Kale",t:"kale/700",h:"#417783"},"az5":{n:"Azure",t:"azure/500",h:"#58a1d7"},"az6":{n:"Azure",t:"azure/600",h:"#4694cc"},"az7":{n:"Azure",t:"azure/700",h:"#1675ae"},"ro5":{n:"Royal",t:"royal/500",h:"#9a91e0"},"ro6":{n:"Royal",t:"royal/600",h:"#8c82db"},"ro7":{n:"Royal",t:"royal/700",h:"#6b62c6"},"fu5":{n:"Fuchsia",t:"fuchsia/500",h:"#cc83b7"},"fu6":{n:"Fuchsia",t:"fuchsia/600",h:"#c572ac"},"fu7":{n:"Fuchsia",t:"fuchsia/700",h:"#ac4c90"}};
 const VARIANTS={
- BM:{label:"Flora + orange + magenta",title:"Flora + orange + magenta: Flora + orange, with magenta",
-   desc:"Flora + orange's hues with magenta/600 in place of the second purple. Five different hues lead, so the first five series are all clearly distinct. Separation drops from Flora + orange's 20.8 to 15.6, still about double the target. This is the palette chosen for Spectrum.",
-   pal:["b7","y6","p6","o7","m6","y7","b6","o6"],trio:["b7","o7","m6"],
-   stats:[["Worst neighbouring color-blind ΔE 15.6 (target ≥ 8)",1],["Typical-vision ΔE 16.7 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: blue/700 · orange/700 · magenta/600 (ΔE 10.2)",0]]},
- B:{label:"Flora + orange",title:"Flora + orange: Flora plus the orange ramp",
-   desc:"Adds the orange ramp, a warm hue between red and yellow that isn't either. It's the strongest palette tested: every neighbouring pair is further apart than in any other option here. The first four slots are four different hues, then each repeats one step off. Uses yellow/700 (olive) in slot 6.",
-   pal:["b7","y6","p7","o6","b6","y7","p6","o7"],trio:["b7","o6","p6"],
-   stats:[["Worst neighbouring color-blind ΔE 20.8 (target ≥ 8)",1],["Typical-vision ΔE 21.7 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: blue/700 · orange/600 · purple/600",0]]},
- C:{label:"Flora + magenta + orange",title:"Flora + magenta + orange: no olive",
-   desc:"Drops yellow/700 so nothing reads green, and adds magenta/700, a raspberry pink. Five different hues lead, and its first three work for scatter plots as is. Separation is lower than Flora + orange's, but still well above target.",
-   pal:["b7","m7","y6","p6","o6","b6","o7","p7"],trio:["b7","m7","y6"],
-   stats:[["Worst neighbouring color-blind ΔE 11.7 (target ≥ 8)",1],["Typical-vision ΔE 17.6 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 11.7) for scatter/maps",1]]},
- cur:{label:"Flora + orange + teal + magenta",title:"Flora + orange + teal + magenta: green and red swapped for Flora blue and yellow",
-   desc:"Blue, teal, orange, yellow, magenta and purple, with green/700 and red/700 swapped for Flora's yellow/600 and blue/600. The order was rebuilt so every neighbouring pair still passes. Color-blind separation is 15.7, and the first three colors work for scatter plots as they are.",
-   pal:null,trio:null,
-   stats:[["Worst neighbouring color-blind ΔE 15.7 (target ≥ 8)",1],["Typical-vision ΔE 17.6 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 16.2) for scatter/maps",1]]}};
-const CURRENT=[
- {n:"Blue",t:"blue/700",h:"#406cc4"},{n:"Teal",t:"teal/600",h:"#01a2a3",nw:1},{n:"Orange",t:"orange/700",h:"#b15204",nw:1},
- {n:"Purple",t:"purple/600",h:"#a47ebf"},{n:"Yellow",t:"yellow/600",h:"#a08d0e"},{n:"Blue",t:"blue/600",h:"#698cd3"},
- {n:"Yellow",t:"yellow/700",h:"#7f7004"},{n:"Magenta",t:"magenta/600",h:"#c66c99",nw:1}];
-VARIANTS.cur.pal=CURRENT;VARIANTS.cur.trio=CURRENT.slice(0,3);
-for(const k of ["BM","B","C"]){VARIANTS[k].pal=VARIANTS[k].pal.map(x=>C_[x]);VARIANTS[k].trio=VARIANTS[k].trio.map(x=>C_[x])}
-let SPEC=VARIANTS.BM.pal;
+ A:{label:"Palette A",title:"Palette A",
+   desc:"Azure then crimson, fuchsia, lime, royal and mint, with lemon/700 and pink/600 last. Palettes B to K use the same eight colors in different orders, all starting with azure.",
+   pal:["az6", "cr6", "fu7", "li6", "ro6", "mi6", "le7", "pi6"],trio:["az6", "cr6", "fu7"],stats:[["Worst neighbouring color-blind ΔE 10.3 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9.6) for scatter/maps",1]]},
+ A3:{label:"Palette B",title:"Palette B",
+   desc:"Azure then lime and pink, with lemon in slot 4. The best-separated of these palettes that also keeps its first three colors as a scatter set.",
+   pal:["az6", "li6", "pi6", "le7", "fu7", "cr6", "ro6", "mi6"],trio:["az6", "li6", "pi6"],stats:[["Worst neighbouring color-blind ΔE 12.3 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9.0) for scatter/maps",1]]},
+ A5:{label:"Palette C",title:"Palette C",
+   desc:"Azure then fuchsia and crimson, with royal in slot 4 and mint last.",
+   pal:["az6", "fu7", "cr6", "ro6", "li6", "pi6", "le7", "mi6"],trio:["az6", "fu7", "cr6"],stats:[["Worst neighbouring color-blind ΔE 9.6 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9.6) for scatter/maps",1]]},
+ A6:{label:"Palette D",title:"Palette D",
+   desc:"Azure then pink and lime, with lemon last. Ties with Palette K for the lowest separation here, but still above target.",
+   pal:["az6", "pi6", "li6", "fu7", "cr6", "ro6", "mi6", "le7"],trio:["az6", "pi6", "li6"],stats:[["Worst neighbouring color-blind ΔE 9.0 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9.0) for scatter/maps",1]]},
+ G:{label:"Palette E",title:"Palette E",
+   desc:"Azure then mint and royal. Royal sits in slot 3 so it never touches azure. Azure and royal can't share a scatter plot, so use azure/600 · mint/600 · lemon/700 for scatter plots and maps.",
+   pal:["az6", "mi6", "ro6", "cr6", "fu7", "li6", "pi6", "le7"],trio:["az6", "mi6", "le7"],stats:[["Worst neighbouring color-blind ΔE 12.3 (target ≥ 8)",1],["Typical-vision ΔE 15.6 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: azure/600 · mint/600 · lemon/700 (ΔE 10.3)",0]]},
+ H:{label:"Palette F",title:"Palette F",
+   desc:"Azure then crimson and royal. Royal sits in slot 3 so it never touches azure. Azure and royal can't share a scatter plot, so use azure/600 · mint/600 · lemon/700 for scatter plots and maps.",
+   pal:["az6", "cr6", "ro6", "mi6", "le7", "fu7", "li6", "pi6"],trio:["az6", "mi6", "le7"],stats:[["Worst neighbouring color-blind ΔE 10.3 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: azure/600 · mint/600 · lemon/700 (ΔE 10.3)",0]]},
+ J:{label:"Palette G",title:"Palette G",
+   desc:"Azure then lime and fuchsia/700. Its first three colors work for scatter plots as they are.",
+   pal:["az6", "li6", "fu7", "cr6", "ro6", "mi6", "le7", "pi6"],trio:["az6", "li6", "fu7"],stats:[["Worst neighbouring color-blind ΔE 10.3 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9.6) for scatter/maps",1]]},
+ K:{label:"Palette H",title:"Palette H",
+   desc:"Azure then lime and royal. Royal sits in slot 3 so it never touches azure. Azure and royal can't share a scatter plot, so use azure/600 · mint/600 · lemon/700 for scatter plots and maps.",
+   pal:["az6", "li6", "ro6", "cr6", "fu7", "mi6", "le7", "pi6"],trio:["az6", "mi6", "le7"],stats:[["Worst neighbouring color-blind ΔE 10.2 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Scatter/maps: azure/600 · mint/600 · lemon/700 (ΔE 10.3)",0]]},
+ M:{label:"Palette I",title:"Palette I",
+   desc:"Azure then fuchsia/700 and lime. Its first three colors work for scatter plots as they are.",
+   pal:["az6", "fu7", "li6", "pi6", "le7", "mi6", "ro6", "cr6"],trio:["az6", "fu7", "li6"],stats:[["Worst neighbouring color-blind ΔE 9.6 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9.6) for scatter/maps",1]]},
+ N:{label:"Palette J",title:"Palette J",
+   desc:"Azure then fuchsia/700 and mint. Its first three colors work for scatter plots as they are.",
+   pal:["az6", "fu7", "mi6", "le7", "pi6", "li6", "ro6", "cr6"],trio:["az6", "fu7", "mi6"],stats:[["Worst neighbouring color-blind ΔE 9.6 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9.6) for scatter/maps",1]]},
+ O:{label:"Palette K",title:"Palette K",
+   desc:"Azure then pink and lemon/700. Its first three colors work for scatter plots as they are.",
+   pal:["az6", "pi6", "le7", "mi6", "fu7", "cr6", "ro6", "li6"],trio:["az6", "pi6", "le7"],stats:[["Worst neighbouring color-blind ΔE 9 (target ≥ 8)",1],["Typical-vision ΔE 16.3 (floor 15)",1],["All ≥ 3:1 on white and on grey/1000",1],["Slots 1–3 validated all-pairs (ΔE 9) for scatter/maps",1]]}
+};
+for(const k in VARIANTS){VARIANTS[k].pal=VARIANTS[k].pal.map(x=>C_[x]);VARIANTS[k].trio=VARIANTS[k].trio.map(x=>C_[x])}
+let SPEC=VARIANTS.A.pal;
 const NEW={
  orange:["#fff3ec","#fee3d5","#ffd2ba","#e8a681","#d68455","#ca7541","#b15204","#69320c","#522709","#361907","#210f05","#150904"],
  teal:["#e8f9f9","#ccf2f2","#adebea","#67cac9","#07b1b2","#01a2a3","#018282","#034e4e","#033d3d","#012828","#001818","#001010"],
  magenta:["#fef1f7","#fee0ed","#fecde3","#e59fbf","#d27ba6","#c66c99","#b1427e","#662c4a","#50223a","#351626","#200d16","#15080e"]};
-const BLUE={100:"#f3f6fb",200:"#e4eaf6",300:"#d4ddf0",400:"#a3b7df",500:"#7f9bd3",600:"#698cd3",700:"#406cc4",800:"#284173",900:"#1f335a",1000:"#14213b"};
-const ORANGE={300:NEW.orange[2],400:NEW.orange[3],500:NEW.orange[4],700:NEW.orange[6],800:NEW.orange[7]};
+const BLUE={100:"#f1f7fc",200:"#d9ecf9",300:"#c3e2f5",400:"#82bde8",500:"#58a1d7",600:"#4694cc",700:"#1675ae",800:"#034669",900:"#033451",1000:"#042435"};
+const ORANGE={300:"#f1d8d0",400:"#e4aa99",500:"#d8856d",700:"#b55134",800:"#6d301e"};
 const SEQ_L=[100,200,300,400,500,700,800,900,1000].map(s=>BLUE[s]);
 const SEQ_D=[1000,900,800,700,500,400,300,200].map(s=>BLUE[s]);
 const DIV_L=[ORANGE[800],ORANGE[700],ORANGE[500],ORANGE[300],"#eae9e8",BLUE[300],BLUE[500],BLUE[700],BLUE[800]];
@@ -312,7 +330,7 @@ const TYPES=[["line","Line"],["area","Stacked area"],["stacked","Stacked bar"],[
 const CHARTS={
   core:{pal:CORE,trio:[CORE[0],CORE[1],{n:"Yellow",t:"yellow/600",h:"#a08d0e"}],series:teams,x:weeks,data:coreData,type:"line",
     title:"Tickets solved by team",note:"Sample data · thousands of tickets per week"},
-  spec:{pal:SPEC,trio:VARIANTS.BM.trio,series:channels,x:bw,data:barData,type:"stacked",
+  spec:{pal:SPEC,trio:VARIANTS.A.trio,series:channels,x:bw,data:barData,type:"stacked",
     title:"Tickets created by channel",note:"Sample data · thousands of tickets per week"}};
 function nice(top){const p=10**Math.floor(Math.log10(top/4));const k=[1,2,2.5,5,10].find(k=>k*p>=top/4);const step=k*p;return {max:Math.ceil(top/step)*step,step}}
 const fmt=v=>(Math.round(v*10)/10)+"k";
@@ -417,15 +435,15 @@ function status(){
 function tokens(){
   const L=[];L.push(":root {","  /* Chart surfaces */","  --dataviz-surface: #ffffff;           /* dark: #202121 grey/1000 */","  --dataviz-grid: #eae9e8;              /* grey/200 · dark: #2f3130 grey/900 */","  --dataviz-baseline: #dcdcda;          /* grey/300 · dark: #404241 grey/800 */","  --dataviz-label: #8b8e89;             /* grey/600 */","  --dataviz-other: #8b8e89;             /* grey/600 */","");
   L.push(`  /* Categorical · Spectrum ${VARIANTS[curVar].label} — same in light and dark */`);SPEC.forEach((c,i)=>L.push(`  --dataviz-cat-${i+1}: ${c.h};`.padEnd(38)+`/* ${c.t} */`));
-  L.push("","  /* Sequential · blue (light) */");[100,200,300,400,500,700,800,900,1000].forEach((st,i)=>L.push(`  --dataviz-seq-${i+1}: ${BLUE[st]};`.padEnd(38)+`/* blue/${st} */`));
-  L.push("","  /* Diverging · orange ↔ grey ↔ blue (light) */");DIV_L.forEach((c,i)=>L.push(`  --dataviz-div-${i-4<0?"n"+(4-i):i===4?"mid":"p"+(i-4)}: ${c};`));
+  L.push("","  /* Sequential · azure (light) */");[100,200,300,400,500,700,800,900,1000].forEach((st,i)=>L.push(`  --dataviz-seq-${i+1}: ${BLUE[st]};`.padEnd(38)+`/* azure/${st} */`));
+  L.push("","  /* Diverging · crimson ↔ grey ↔ azure (light) */");DIV_L.forEach((c,i)=>L.push(`  --dataviz-div-${i-4<0?"n"+(4-i):i===4?"mid":"p"+(i-4)}: ${c};`));
   L.push("","  /* Status (fixed) */");STATUS.forEach(s=>L.push(`  --dataviz-status-${s.r.toLowerCase()}: ${s.h};`.padEnd(38)+`/* ${s.t} */`));
   L.push("}","","/* Dark overrides (seq flips; diverging arms re-stepped) */",":root[data-theme=\"dark\"] {","  --dataviz-surface: #202121; --dataviz-grid: #2f3130; --dataviz-baseline: #404241;");
   SEQ_D.forEach((c,i)=>L.push(`  --dataviz-seq-${i+1}: ${c};`));L.push("  --dataviz-seq-9: unset;");
   DIV_D.forEach((c,i)=>L.push(`  --dataviz-div-${i-4<0?"n"+(4-i):i===4?"mid":"p"+(i-4)}: ${c};`));L.push("}");
   $("cssOut").textContent=L.join("\n");
   const steps=[100,200,300,400,500,600,700,800,900,1000,1100,1200];
-  const o={};for(const k in NEW){o[k]={};NEW[k].forEach((h,i)=>o[k][steps[i]]=h)}
+  const o={"pink": {"600": "#ce7092"}, "crimson": {"600": "#d17459", "700": "#b55134"}, "orange": {"600": "#ca7a37"}, "lemon": {"700": "#916816"}, "lime": {"600": "#859601", "700": "#69760b"}, "mint": {"600": "#419e6d"}, "azure": {"600": "#4694cc", "700": "#1675ae"}, "royal": {"600": "#8c82db", "700": "#6b62c6"}, "fuchsia": {"600": "#c572ac", "700": "#ac4c90"}};
   $("jsonOut").textContent=JSON.stringify(o,null,2);
 }
 document.querySelectorAll(".copy").forEach(b=>b.addEventListener("click",()=>{const el=$(b.dataset.target);const t=el.textContent;
@@ -442,7 +460,7 @@ const widths={};const redraw={specChart:()=>catChart("spec"),heat:()=>heat(),div
 if(window.ResizeObserver){const ro=new ResizeObserver(es=>es.forEach(e=>{const id=e.target.id,w=Math.round(e.contentRect.width);if(widths[id]!==undefined&&widths[id]!==w){widths[id]=w;hideTip();redraw[id]()}else widths[id]=w}));Object.keys(redraw).forEach(id=>ro.observe($(id)))}
 let last=null;function themed(){const d=isDark();if(d===last)return;last=d;heat();div()}
 
-let curVar="BM";
+let curVar="A";
 function setVariant(k){curVar=k;const V=VARIANTS[k];SPEC=V.pal;
   $("varSeg").querySelectorAll("button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===k));
   $("varTitle").textContent=V.title;$("varDesc").textContent=V.desc;
@@ -450,9 +468,9 @@ function setVariant(k){curVar=k;const V=VARIANTS[k];SPEC=V.pal;
   swatches($("specSw"),SPEC);
   Object.assign(CHARTS.spec,{pal:SPEC,trio:V.trio,series:channels.slice(0,SPEC.length),data:barData.map(r=>r.slice(0,SPEC.length))});
   hideTip();catChart("spec");tokens();}
-$("varSeg").innerHTML=["cur","BM","B","C"].map(k=>[k,VARIANTS[k]]).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="false">${v.label}</button>`).join("");
+$("varSeg").innerHTML=["A","A3","A5","A6","G","H","J","K","M","N","O"].map(k=>[k,VARIANTS[k]]).map(([k,v])=>`<button type="button" data-v="${k}" aria-pressed="false">${v.label}</button>`).join("");
 $("varSeg").addEventListener("click",e=>{const b=e.target.closest("button");if(b)setVariant(b.dataset.v)});
-initChart("spec");setVariant("BM");status();themed();
+initChart("spec");setVariant("A");status();themed();
 })();
 </script>
 </body>

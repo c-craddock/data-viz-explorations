@@ -23,9 +23,16 @@
   --pass:#25390f; --pass-ink:#c6e8a1; --fail:#3f1315; --fail-ink:#f3d7d9; --warn:#3b3405; --warn-ink:#f6eba6;}
 
 *{box-sizing:border-box}
+.pagetabs{display:flex;gap:4px;border-bottom:1px solid var(--line);padding-top:20px;flex-wrap:wrap}
+.pagetabs a,.pagetabs span{font-size:14px;line-height:20px;padding:10px 14px;margin-bottom:-1px;border-bottom:2px solid transparent;color:var(--ink-2);text-decoration:none;display:inline-flex;align-items:center;gap:6px}
+.pagetabs span[aria-current]{color:var(--ink);font-weight:600;border-bottom-color:var(--ink)}
+.pagetabs a:hover{color:var(--ink);border-bottom-color:var(--line)}
+.pagetabs a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+.pagetabs small{font-size:11px;opacity:.7}
+
 body{margin:0;background:var(--page);color:var(--ink);font:14px/20px var(--font);letter-spacing:-.15px;padding-inline:16px;padding-block:0 64px}
 .wrap{max-width:1120px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
-header.top{padding-block:40px 8px;display:flex;flex-direction:column;gap:10px}
+header.top{padding-block:24px 8px;display:flex;flex-direction:column;gap:10px}
 .eyebrow{font-size:12px;line-height:16px;color:var(--ink-2);text-transform:uppercase;letter-spacing:.06em}
 h1{font-size:32px;line-height:38px;font-weight:600;letter-spacing:-.6px;margin:0;text-wrap:balance}
 h2{font-size:20px;line-height:26px;font-weight:600;letter-spacing:-.4px;margin:0;text-wrap:balance}
@@ -90,8 +97,8 @@ ul{margin:0;padding-left:18px;display:flex;flex-direction:column;gap:8px;max-wid
 </svg>
 
 <div class="wrap">
+  <nav class="pagetabs" aria-label="Data viz pages"><a href="index.html">Data viz color palettes</a><span aria-current="page">BI tool palette comparisons</span></nav>
   <header class="top">
-    <a class="small" href="index.html">← Data viz colour palettes</a>
     <span class="eyebrow">Data viz · Color guidelines · Reference</span>
     <h1>How popular analytics tools color their charts</h1>
     <p class="lede">The default categorical palettes of seven widely used BI and charting tools, scored with the same checks as our own palettes. Use it to see what each one gets right, and where it breaks down for color-blind readers or on light and dark backgrounds.</p>
@@ -158,7 +165,7 @@ const P=[
   s:{cvd:3.1,normal:21.9,lowL:4,lowD:2,band:3},t:"Distinct for typical vision, but uses a plain grey as series 5. It reads as “Other” and merges with the red beside it for color-blind readers."},
  {n:"IBM Carbon",who:"Carbon Charts, IBM Cognos-style dashboards",c:["#6929c4","#1192e8","#005d5d","#9f1853","#fa4d56","#570408","#198038","#002d9c","#ee538b","#b28600","#009d9a","#012749","#8a3800","#a56eff"],
   s:{cvd:6.3,normal:21.6,lowL:0,lowD:5,band:3},t:"The most rigorous on white: every color clears 3:1 and the order is designed. Very dark slots mean it needs its own dark-theme palette, which Carbon ships."},
- {n:"Ours · Spectrum",who:"Proposed for Zendesk analytics",ours:1,c:["#698cd3","#a08d0e","#a47ebf","#b15204","#c66c99","#7f7004","#406cc4","#ca7541"],
+ {n:"Ours · Flora secondary",who:"Proposed for Zendesk analytics: Palettes A to K",ours:1,c:["#698cd3","#a08d0e","#a47ebf","#b15204","#c66c99","#7f7004","#406cc4","#ca7541"],
   s:{cvd:15.6,normal:16.7,lowL:0,lowD:0,band:0},t:"For comparison. No red or green, and it passes every check on both backgrounds with a single set of hex values."}];
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 function mini(c){
@@ -177,15 +184,29 @@ function scores(s){return [
   pill(s.lowL===0,s.lowL<=2,s.lowL?`${s.lowL} below 3:1 on white`:"All ≥ 3:1 on white"),
   pill(s.lowD===0,s.lowD<=2,s.lowD?`${s.lowD} below 3:1 on dark`:"All ≥ 3:1 on dark")].join("")}
 const OPTS=[
- {k:"teal",label:"Flora + orange + teal + magenta",c:["#406cc4","#01a2a3","#b15204","#a47ebf","#a08d0e","#698cd3","#7f7004","#c66c99"],
-  s:{cvd:15.7,normal:17.6,lowL:0,lowD:0,band:0},t:"No red or green. Blue, teal and orange lead, and those first three also work for scatter plots. Passes every check on both backgrounds with one set of hex values."},
- {k:"BM",label:"Flora + orange + magenta",c:["#406cc4","#a08d0e","#a47ebf","#b15204","#c66c99","#7f7004","#698cd3","#ca7541"],
-  s:{cvd:15.6,normal:16.7,lowL:0,lowD:0,band:0},t:"The palette chosen for Spectrum. No red or green, and five different hues lead. Passes every check on both backgrounds with one set of hex values."},
- {k:"B",label:"Flora + orange",c:["#406cc4","#a08d0e","#8d59b1","#ca7541","#698cd3","#7f7004","#a47ebf","#b15204"],
-  s:{cvd:20.8,normal:21.7,lowL:0,lowD:0,band:0},t:"The most separated palette tested: every neighbouring pair is well apart. After slot 4 each hue repeats one step off. Passes every check on both backgrounds."},
- {k:"C",label:"Flora + magenta + orange",c:["#406cc4","#b1427e","#a08d0e","#a47ebf","#ca7541","#698cd3","#b15204","#8d59b1"],
-  s:{cvd:11.7,normal:17.6,lowL:0,lowD:0,band:0},t:"No olive yellow, so nothing reads green. The lowest separation of the four options, but still well above target, and its first three colors work for scatter plots."}];
-let optKey="BM",cvdMode="none";
+ {k:"A",label:"Palette A",c:["#4694cc", "#d17459", "#ac4c90", "#859601", "#8c82db", "#419e6d", "#916816", "#ce7092"],
+  s:{cvd:10.3,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 crimson/600 \u00b7 fuchsia/700 \u00b7 lime/600 \u00b7 royal/600 \u00b7 mint/600 \u00b7 lemon/700 \u00b7 pink/600. Includes crimson, lime and mint; its first three colors work for scatter plots."},
+ {k:"B",label:"Palette B",c:["#4694cc", "#859601", "#ce7092", "#916816", "#ac4c90", "#d17459", "#8c82db", "#419e6d"],
+  s:{cvd:12.3,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 lime/600 \u00b7 pink/600 \u00b7 lemon/700 \u00b7 fuchsia/700 \u00b7 crimson/600 \u00b7 royal/600 \u00b7 mint/600. Includes crimson, lime and mint; its first three colors work for scatter plots."},
+ {k:"C",label:"Palette C",c:["#4694cc", "#ac4c90", "#d17459", "#8c82db", "#859601", "#ce7092", "#916816", "#419e6d"],
+  s:{cvd:9.6,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 fuchsia/700 \u00b7 crimson/600 \u00b7 royal/600 \u00b7 lime/600 \u00b7 pink/600 \u00b7 lemon/700 \u00b7 mint/600. Includes crimson, lime and mint; its first three colors work for scatter plots."},
+ {k:"D",label:"Palette D",c:["#4694cc", "#ce7092", "#859601", "#ac4c90", "#d17459", "#8c82db", "#419e6d", "#916816"],
+  s:{cvd:9,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 pink/600 \u00b7 lime/600 \u00b7 fuchsia/700 \u00b7 crimson/600 \u00b7 royal/600 \u00b7 mint/600 \u00b7 lemon/700. Includes crimson, lime and mint; its first three colors work for scatter plots."},
+ {k:"E",label:"Palette E",c:["#4694cc", "#419e6d", "#8c82db", "#d17459", "#ac4c90", "#859601", "#ce7092", "#916816"],
+  s:{cvd:12.3,normal:15.6,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 mint/600 \u00b7 royal/600 \u00b7 crimson/600 \u00b7 fuchsia/700 \u00b7 lime/600 \u00b7 pink/600 \u00b7 lemon/700. Includes crimson, lime and mint; use azure/600 \u00b7 mint/600 \u00b7 lemon/700 for scatter plots."},
+ {k:"F",label:"Palette F",c:["#4694cc", "#d17459", "#8c82db", "#419e6d", "#916816", "#ac4c90", "#859601", "#ce7092"],
+  s:{cvd:10.3,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 crimson/600 \u00b7 royal/600 \u00b7 mint/600 \u00b7 lemon/700 \u00b7 fuchsia/700 \u00b7 lime/600 \u00b7 pink/600. Includes crimson, lime and mint; use azure/600 \u00b7 mint/600 \u00b7 lemon/700 for scatter plots."},
+ {k:"G",label:"Palette G",c:["#4694cc", "#859601", "#ac4c90", "#d17459", "#8c82db", "#419e6d", "#916816", "#ce7092"],
+  s:{cvd:10.3,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 lime/600 \u00b7 fuchsia/700 \u00b7 crimson/600 \u00b7 royal/600 \u00b7 mint/600 \u00b7 lemon/700 \u00b7 pink/600. Includes crimson, lime and mint; its first three colors work for scatter plots."},
+ {k:"H",label:"Palette H",c:["#4694cc", "#859601", "#8c82db", "#d17459", "#ac4c90", "#419e6d", "#916816", "#ce7092"],
+  s:{cvd:10.2,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 lime/600 \u00b7 royal/600 \u00b7 crimson/600 \u00b7 fuchsia/700 \u00b7 mint/600 \u00b7 lemon/700 \u00b7 pink/600. Includes crimson, lime and mint; use azure/600 \u00b7 mint/600 \u00b7 lemon/700 for scatter plots."},
+ {k:"I",label:"Palette I",c:["#4694cc", "#ac4c90", "#859601", "#ce7092", "#916816", "#419e6d", "#8c82db", "#d17459"],
+  s:{cvd:9.6,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 fuchsia/700 \u00b7 lime/600 \u00b7 pink/600 \u00b7 lemon/700 \u00b7 mint/600 \u00b7 royal/600 \u00b7 crimson/600. Includes crimson, lime and mint; its first three colors work for scatter plots."},
+ {k:"J",label:"Palette J",c:["#4694cc", "#ac4c90", "#419e6d", "#916816", "#ce7092", "#859601", "#8c82db", "#d17459"],
+  s:{cvd:9.6,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 fuchsia/700 \u00b7 mint/600 \u00b7 lemon/700 \u00b7 pink/600 \u00b7 lime/600 \u00b7 royal/600 \u00b7 crimson/600. Includes crimson, lime and mint; its first three colors work for scatter plots."},
+ {k:"K",label:"Palette K",c:["#4694cc", "#ce7092", "#916816", "#419e6d", "#ac4c90", "#d17459", "#8c82db", "#859601"],
+  s:{cvd:9,normal:16.3,lowL:0,lowD:0,band:0},t:"Flora secondary colors, starting with azure: azure/600 \u00b7 pink/600 \u00b7 lemon/700 \u00b7 mint/600 \u00b7 fuchsia/700 \u00b7 crimson/600 \u00b7 royal/600 \u00b7 lime/600. Includes crimson, lime and mint; its first three colors work for scatter plots."}];
+let optKey="A",cvdMode="none";
 const OURS=P.find(p=>p.ours);
 function applyOpt(){const o=OPTS.find(x=>x.k===optKey);Object.assign(OURS,{c:o.c,s:o.s,t:o.t,opt:o.label})}
 function render(){applyOpt();
